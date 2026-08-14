@@ -1,6 +1,8 @@
 package Modelo;
 
-public abstract class Usuario {
+import java.io.Serializable;
+
+public abstract class Usuario implements Serializable {
     protected String idUsuario;
     protected String nombreUsuario;
     protected String contrasena;
@@ -56,5 +58,15 @@ public abstract class Usuario {
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario='" + idUsuario + '\'' +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
+                ", nombreCompleto='" + nombreCompleto + '\'' +
+                ", tipoUsuario=" + tipoUsuario +
+                '}';
     }
 }
