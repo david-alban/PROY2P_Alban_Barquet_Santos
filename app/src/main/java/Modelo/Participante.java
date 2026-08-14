@@ -1,10 +1,12 @@
 package Modelo;
 
+import java.io.Serializable;
+
 public class Participante extends Usuario implements Comparable<Participante> {
     private int puntajeAcumulado;
 
-    public Participante() {
-        super();
+    public Participante(String idUsuario, String nombreUsuario, String contrasena, String nombreCompleto, TipoUsuario tipoUsuario) {
+        super(idUsuario, nombreUsuario, contrasena, nombreCompleto, tipoUsuario);
     }
 
     public Participante(String idUsuario, String nombreUsuario, String contrasena, String nombreCompleto, TipoUsuario tipoUsuario, int puntajeAcumulado) {

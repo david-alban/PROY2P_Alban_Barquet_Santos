@@ -1,10 +1,12 @@
 package Modelo;
 
-public class Administrador extends Usuario{
+import java.io.Serializable;
+
+public class Administrador extends Usuario {
     private String cargo;
 
-    public Administrador() {
-        super();
+    public Administrador(String idUsuario, String nombreUsuario, String contrasena, String nombreCompleto, TipoUsuario tipoUsuario) {
+        super(idUsuario, nombreUsuario, contrasena, nombreCompleto, tipoUsuario);
     }
 
     public Administrador(String idUsuario, String nombreUsuario, String contrasena, String nombreCompleto, TipoUsuario tipoUsuario, String cargo) {
