@@ -6,14 +6,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ProyectoRepo implements Serializable {
-    private Context context;
     private ArrayList<Usuario> usuarios;
+    private ManejadorArchivos maArchivos = new ManejadorArchivos();
 
     public ProyectoRepo(Context context){
         cargarDatos(context);
     }
     public void cargarDatos(Context context){
-        usuarios = ManejadorArchivos.leerUsuarios(context);
+        usuarios = maArchivos.leerUsuarios(context);
     }
 
     public ArrayList<Usuario> getUsuarios(){
