@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
             txt = findViewById(R.id.tex);
             ProyectoRepo pro = new ProyectoRepo(this);
-
             txt.setText(pro.getUsuarios().toString());
             return insets;
         });
