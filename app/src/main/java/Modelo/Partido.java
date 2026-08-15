@@ -3,12 +3,6 @@ package Modelo;
 import java.io.Serializable;
 import Excepciones.DatosIncompletosException;
 
-enum EstadoPartido {
-    ABIERTO,
-    CERRADO,
-    FINALIZADO
-}
-
 
 public class Partido implements Serializable {
     private String id;
@@ -75,4 +69,20 @@ public class Partido implements Serializable {
 
     public int getGolesSeleccion1() { return golesSeleccion1; }
     public int getGolesSeleccion2() { return golesSeleccion2; }
+
+    @Override
+    public String toString() {
+        return "Partido{" +
+                "id='" + id + '\'' +
+                ", fase='" + fase + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", hora='" + hora + '\'' +
+                ", estadio='" + estadio + '\'' +
+                ", seleccion1='" + seleccion1 + '\'' +
+                ", seleccion2='" + seleccion2 + '\'' +
+                ", estado=" + estado +
+                ", golesSeleccion1=" + golesSeleccion1 +
+                ", golesSeleccion2=" + golesSeleccion2 +
+                '}';
+    }
 }

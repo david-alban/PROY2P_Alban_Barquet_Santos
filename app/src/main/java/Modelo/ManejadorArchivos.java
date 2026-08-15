@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ManejadorArchivos {
+public class ManejadorArchivos implements Serializable {
 
     public ArrayList<String> leerLineas(Context context, String nombreArchivo) {
         ArrayList<String> lineas = new ArrayList<>();
@@ -41,9 +42,10 @@ public class ManejadorArchivos {
                 FileInputStream fis = new FileInputStream(archivoInterno);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(fis))
         ) {
-            String linea;
+            //Saltar el encabezado
+            String linea = reader.readLine();
+            //Recorrer las lineas
             while ((linea = reader.readLine()) != null) {
-                linea = reader.readLine();
                 if (!linea.trim().isEmpty()) {
                     lineas.add(linea);
                 }
@@ -66,6 +68,7 @@ public class ManejadorArchivos {
             String nombreCompleto = datos[3];
             Modelo.TipoUsuario tipoUsuario = Modelo.TipoUsuario.valueOf(datos[4]);
             Usuario usuario;
+
             if(tipoUsuario == TipoUsuario.PARTICIPANTE){
                 usuario = new Participante(idUsuario,nombreUsuario,contrasena,nombreCompleto,tipoUsuario);
             }else{
@@ -76,6 +79,26 @@ public class ManejadorArchivos {
         return usuarios;
     }
 
+    public ArrayList<Partido> leerPartidos(Context context){
+        ArrayList<Partido> partidos = new ArrayList<>();
+        ArrayList<String> lineas = leerLineas(context,"partidos.txt");
+
+        for(String linea:lineas){
+            String[] datos = linea.split(";");
+            String id = datos[0];
+            String fase = datos[1];
+            String fecha = datos[2];
+            String horaUTC = datos[3];
+            String estadio = datos[4];
+            String seleccion1 = datos[5];
+            String seleccion2 = datos[6];
+            EstadoPartido estado = EstadoPartido.valueOf(datos[7]);
+
+            Partido partido = new Partido(id,fase,fecha,horaUTC,estadio,seleccion1,seleccion2);
+            partidos.add(partido);
+        }
+        return partidos;
+    }
 
 
 }
