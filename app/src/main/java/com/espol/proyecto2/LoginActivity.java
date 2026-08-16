@@ -51,13 +51,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     finish();
                 } catch(CredencialesInvalidasException e){
-                    Toast.makeText(this,e.getMessage(),LENGTH_SHORT);
+                    Toast.makeText(this,e.getMessage(),LENGTH_SHORT).show();
                 }
             });
             return insets;
         });
     }
-
-
-
 }
