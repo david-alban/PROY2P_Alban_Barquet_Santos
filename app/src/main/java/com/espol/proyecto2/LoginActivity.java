@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import Excepciones.CredencialesInvalidasException;
 import Modelo.ProyectoRepo;
+import Modelo.TipoUsuario;
 import Modelo.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
@@ -41,10 +42,13 @@ public class LoginActivity extends AppCompatActivity {
                 try{
                     pro.autenticar(usuarioIngresado,contrasenaIngrasada);
                     Toast.makeText(this, "Bienvenido " + pro.getUsuarioLogueado().getNombreCompleto(), Toast.LENGTH_SHORT).show();
+                    if(pro.getUsuarioLogueado().getTipoUsuario().equals(TipoUsuario.ADMINISTRADOR)){
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("MI_REPOSITORIO", pro);
-                    startActivity(intent);
+                    } else{
+                        Intent intent = new Intent(LoginActivity.this, ParticipantHomeActivity.class);
+                        intent.putExtra("MI_REPOSITORIO", pro);
+                        startActivity(intent);
+                    }
                     finish();
                 } catch(CredencialesInvalidasException e){
                     Toast.makeText(this,e.getMessage(),LENGTH_SHORT);
