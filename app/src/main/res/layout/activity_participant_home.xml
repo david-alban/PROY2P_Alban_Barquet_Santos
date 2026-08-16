@@ -41,7 +41,7 @@
 
                 <!-- Opción 2: Pronósticos -->
                 <LinearLayout
-                    android:id="@+id/btnSalirA"
+                    android:id="@+id/btnTablaPosiciones"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
@@ -164,6 +164,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
+                    android:onClick="salir"
                     android:paddingHorizontal="16dp">
 
                     <ImageView

@@ -55,6 +55,10 @@ public class TablaPosicionesActivity extends AppCompatActivity {
         mostrarPuntajes();
     }
 
+    public void volver(View view){
+        finish();
+    }
+
     public void mostrarPuntajes() {
         contenedorPuntajes.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
