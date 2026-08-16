@@ -45,7 +45,9 @@ public class LoginActivity extends AppCompatActivity {
                 pro.autenticar(usuarioIngresado,contrasenaIngrasada);
                 Toast.makeText(this, "Bienvenido " + pro.getUsuarioLogueado().getNombreCompleto(), Toast.LENGTH_SHORT).show();
                 if(pro.getUsuarioLogueado().getTipoUsuario().equals(TipoUsuario.ADMINISTRADOR)){
-
+                    Intent intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                    intent.putExtra("MI_REPOSITORIO", pro);
+                    startActivity(intent);
                 } else{
                     Intent intent = new Intent(LoginActivity.this, ParticipantHomeActivity.class);
                     intent.putExtra("MI_REPOSITORIO", pro);

@@ -1,4 +1,67 @@
 package com.espol.proyecto2;
 
-public class AdminHomeActivity {
-}
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import Modelo.Administrador;
+import Modelo.ProyectoRepo;
+
+public class AdminHomeActivity extends AppCompatActivity {
+    private TextView userName;
+    private TextView userRol;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_admin_home);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        userName = findViewById(R.id.lblNombreHeader);
+        userRol = findViewById(R.id.lblRolHeader);
+
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("MI_REPOSITORIO")) {
+            ProyectoRepo pro = (ProyectoRepo) intent.getSerializableExtra("MI_REPOSITORIO");
+
+            if (pro != null && pro.getUsuarioLogueado() != null) {
+                Administrador usuarioActual = (Administrador) pro.getUsuarioLogueado();
+
+                userName.setText(usuarioActual.getNombreCompleto());
+                userRol.setText(usuarioActual.getTipoUsuario().toString());
+            }
+        }
+
+
+
+    }
+    public void administrarPartidos (View view){
+        Toast.makeText(this,"Prueba Adminsitrar Partidos",Toast.LENGTH_SHORT).show();
+
+    }
+    public void actualizarPuntajes (View view){
+        Toast.makeText(this,"Prueba Actualizar Puntajes",Toast.LENGTH_SHORT).show();
+
+    }
+    public void salir (View view){
+        finishAffinity();
+
+    }
+    }
+
+
