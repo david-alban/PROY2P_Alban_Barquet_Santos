@@ -24,6 +24,10 @@ public class Participante extends Usuario implements Comparable<Participante> {
 
     @Override
     public int compareTo(Participante otro) {
-        return Integer.compare(otro.getPuntajeAcumulado(), this.puntajeAcumulado);
+        int comparacionPuntaje = Integer.compare(otro.getPuntajeAcumulado(), this.puntajeAcumulado);
+        if (comparacionPuntaje == 0) {
+            return this.getNombreUsuario().compareToIgnoreCase(otro.getNombreUsuario());
+        }
+        return comparacionPuntaje;
     }
 }
