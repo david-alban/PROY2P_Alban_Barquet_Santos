@@ -5,14 +5,17 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -58,24 +61,109 @@ public class ManejadorArchivos implements Serializable {
     }
     public ArrayList<Usuario> leerUsuarios(Context context) {
         ArrayList<Usuario> usuarios = new ArrayList<>();
-        ArrayList<String> lineas = leerLineas(context,"usuarios.txt");
+        ArrayList<String> lineas = leerLineas(context, "usuarios.txt");
 
-        for(String linea: lineas){
-            String[] datos = linea.split(";");
-            String idUsuario = datos[0];
-            String nombreUsuario = datos[1];
-            String contrasena = datos[2];
-            String nombreCompleto = datos[3];
-            Modelo.TipoUsuario tipoUsuario = Modelo.TipoUsuario.valueOf(datos[4]);
-            Usuario usuario;
+        ArrayList<String> lineasParticipantes = leerParticipantes(context);
+        ArrayList<String> lineasAdmins = leerAdmins(context);
 
-            if(tipoUsuario == TipoUsuario.PARTICIPANTE){
-                usuario = new Participante(idUsuario,nombreUsuario,contrasena,nombreCompleto,tipoUsuario);
-            }else{
-                usuario = new Administrador(idUsuario,nombreUsuario,contrasena,nombreCompleto,tipoUsuario);
-            }
-            usuarios.add(usuario);
+        if (lineas == null || lineas.isEmpty()) {
+            return usuarios;
         }
+
+        int inicio = 0;
+        if (lineas.get(0).toLowerCase().startsWith("idusuario")) {
+            inicio = 1;
+        }
+
+        for (int index = inicio; index < lineas.size(); index++) {
+            String linea = lineas.get(index);
+
+            if (linea == null || linea.trim().isEmpty()) {
+                continue;
+            }
+
+            String[] datos = linea.split(";");
+
+            if (datos.length >= 5) {
+                String idUsuario = datos[0].trim();
+                String nombreUsuario = datos[1].trim();
+                String contrasena = datos[2].trim();
+                String nombreCompleto = datos[3].trim();
+
+                Modelo.TipoUsuario tipoUsuario;
+                try {
+                    tipoUsuario = Modelo.TipoUsuario.valueOf(datos[4].trim().toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+
+                Usuario usuario;
+
+                if (tipoUsuario == TipoUsuario.PARTICIPANTE) {
+                    int puntos = 0;
+                    boolean encontrado = false;
+                    int i = 0;
+
+                    if (lineasParticipantes != null) {
+                        while (i < lineasParticipantes.size() && !encontrado) {
+                            String line = lineasParticipantes.get(i);
+                            if (line != null && !line.trim().isEmpty()) {
+                                String[] partes = line.split(";");
+
+                                if (partes.length >= 2) {
+                                    String idEnArchivo = partes[0].trim();
+
+                                    if (idEnArchivo.equals(idUsuario)) {
+                                        try {
+                                            puntos = Integer.parseInt(partes[1].trim());
+                                        } catch (NumberFormatException e) {
+                                            puntos = 0;
+                                        }
+                                        encontrado = true;
+                                    }
+                                }
+                            }
+                            i++;
+                        }
+                    }
+
+                    Participante participante = new Participante(idUsuario, nombreUsuario, contrasena, nombreCompleto, tipoUsuario);
+                    participante.setPuntajeAcumulado(puntos);
+                    usuario = participante;
+
+                } else {
+                    String cargo = "Sin Cargo";
+                    boolean encontrado = false;
+                    int i = 0;
+
+                    if (lineasAdmins != null) {
+                        while (i < lineasAdmins.size() && !encontrado) {
+                            String line = lineasAdmins.get(i);
+                            if (line != null && !line.trim().isEmpty()) {
+                                String[] partes = line.split(";");
+
+                                if (partes.length >= 2) {
+                                    String idEnArchivo = partes[0].trim();
+
+                                    if (idEnArchivo.equals(idUsuario)) {
+                                        cargo = partes[1].trim();
+                                        encontrado = true;
+                                    }
+                                }
+                            }
+                            i++;
+                        }
+                    }
+
+                    Administrador admin = new Administrador(idUsuario, nombreUsuario, contrasena, nombreCompleto, tipoUsuario);
+                    admin.setCargo(cargo);
+                    usuario = admin;
+                }
+
+                usuarios.add(usuario);
+            }
+        }
+
         return usuarios;
     }
 
@@ -98,6 +186,49 @@ public class ManejadorArchivos implements Serializable {
             partidos.add(partido);
         }
         return partidos;
+    }
+
+    public ArrayList<String> leerParticipantes(Context context){
+        ArrayList<String> resultado;
+        resultado = leerLineas(context,"participantes.txt");
+        return resultado;
+    }
+
+    public ArrayList<String> leerAdmins(Context context){
+        ArrayList<String> resultado;
+        resultado = leerLineas(context,"administradores.txt");
+        return resultado;
+    }
+
+    public ArrayList<String> leerResultados(Context context){
+        ArrayList<String> resultado;
+        resultado = leerLineas(context,"resultados.txt");
+        return resultado;
+    }
+
+    public boolean escribirLineas(Context context, String nombreArchivo, ArrayList<String> lineas, boolean append) {
+
+        int modo;
+        if (append) {
+            modo = Context.MODE_APPEND;
+        } else {
+            modo = Context.MODE_PRIVATE;
+        }
+
+        try (FileOutputStream fos = context.openFileOutput(nombreArchivo, modo);
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos))) {
+
+            for (int i = 0; i < lineas.size(); i++) {
+                writer.write(lineas.get(i));
+                if (i < lineas.size() - 1) {
+                    writer.newLine();
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
