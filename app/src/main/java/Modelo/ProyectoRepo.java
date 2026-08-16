@@ -15,11 +15,14 @@ public class ProyectoRepo implements Serializable {
     private ManejadorArchivos maArchivos = new ManejadorArchivos();
 
     public ProyectoRepo(Context context){
-        cargarDatos(context);
+        cargarDatosLogin(context);
     }
-    public void cargarDatos(Context context){
-        partidos = maArchivos.leerPartidos(context);
+    public void cargarDatosLogin(Context context){
         usuarios = maArchivos.leerUsuarios(context);
+    }
+    public void cargarDatosMenu(Context context){
+        partidos = maArchivos.leerPartidos(context);
+        maArchivos.leerResultados(context);
     }
     public void autenticar(String usuarioIngresado, String contrasenaIngresada) throws CredencialesInvalidasException {
         for (Usuario usuario : usuarios) {
@@ -31,6 +34,22 @@ public class ProyectoRepo implements Serializable {
         }
         //Si no hubo conincidencias se lanza la siguinete excepcion personalizada.
         throw new CredencialesInvalidasException();
+    }
+
+    public void actualizarDatosParticipantes(Context context){
+        ArrayList<String> datos = new ArrayList<>();
+        datos.add("idUsuario;puntajeAcumulado");
+        for (Usuario usuario : usuarios) {
+            if (usuario != null && usuario.getTipoUsuario() == TipoUsuario.PARTICIPANTE) {
+                Participante pa = (Participante) usuario;
+
+                String id = (pa.getIdUsuario() != null) ? pa.getIdUsuario() : "N/A";
+                String str = id + ";" + pa.getPuntajeAcumulado();
+                datos.add(str);
+            }
+        }
+
+        maArchivos.escribirLineas(context, "participantes.txt", datos, false);
     }
     public ArrayList<Usuario> getUsuarios(){
         return usuarios;

@@ -32,29 +32,30 @@ public class LoginActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            txtUsuario = findViewById(R.id.txtUsuario);
-            txtPasword = findViewById(R.id.txtPassword);
-            btnIngresar = findViewById(R.id.btnIngresar);
-            ProyectoRepo pro = new ProyectoRepo(this);
-            btnIngresar.setOnClickListener(view -> {
-                String usuarioIngresado = txtUsuario.getText().toString().trim();
-                String contrasenaIngrasada = txtPasword.getText().toString().trim();
-                try{
-                    pro.autenticar(usuarioIngresado,contrasenaIngrasada);
-                    Toast.makeText(this, "Bienvenido " + pro.getUsuarioLogueado().getNombreCompleto(), Toast.LENGTH_SHORT).show();
-                    if(pro.getUsuarioLogueado().getTipoUsuario().equals(TipoUsuario.ADMINISTRADOR)){
-
-                    } else{
-                        Intent intent = new Intent(LoginActivity.this, ParticipantHomeActivity.class);
-                        intent.putExtra("MI_REPOSITORIO", pro);
-                        startActivity(intent);
-                    }
-                    finish();
-                } catch(CredencialesInvalidasException e){
-                    Toast.makeText(this,e.getMessage(),LENGTH_SHORT).show();
-                }
-            });
             return insets;
+        });
+        txtUsuario = findViewById(R.id.txtUsuario);
+        txtPasword = findViewById(R.id.txtPassword);
+        btnIngresar = findViewById(R.id.btnIngresar);
+        ProyectoRepo pro = new ProyectoRepo(this);
+        btnIngresar.setOnClickListener(view -> {
+            String usuarioIngresado = txtUsuario.getText().toString().trim();
+            String contrasenaIngrasada = txtPasword.getText().toString().trim();
+            try{
+                pro.autenticar(usuarioIngresado,contrasenaIngrasada);
+                Toast.makeText(this, "Bienvenido " + pro.getUsuarioLogueado().getNombreCompleto(), Toast.LENGTH_SHORT).show();
+                if(pro.getUsuarioLogueado().getTipoUsuario().equals(TipoUsuario.ADMINISTRADOR)){
+
+                } else{
+                    Intent intent = new Intent(LoginActivity.this, ParticipantHomeActivity.class);
+                    intent.putExtra("MI_REPOSITORIO", pro);
+                    startActivity(intent);
+                }
+                finish();
+            } catch(CredencialesInvalidasException e){
+                Toast.makeText(this,e.getMessage(), LENGTH_SHORT).show();
+            }
+
         });
     }
 }

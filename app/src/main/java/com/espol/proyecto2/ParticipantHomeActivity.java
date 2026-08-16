@@ -2,6 +2,7 @@ package com.espol.proyecto2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -10,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import Modelo.Participante;
 import Modelo.ProyectoRepo;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
@@ -40,11 +42,21 @@ public class ParticipantHomeActivity extends AppCompatActivity {
             ProyectoRepo pro = (ProyectoRepo) intent.getSerializableExtra("MI_REPOSITORIO");
 
             if (pro != null && pro.getUsuarioLogueado() != null) {
-                Usuario usuarioActual = pro.getUsuarioLogueado();
+                Participante usuarioActual = (Participante) pro.getUsuarioLogueado();
 
                 nombreUsuario.setText(usuarioActual.getNombreCompleto());
                 rolUsuario.setText(usuarioActual.getTipoUsuario().toString());
             }
         }
+    }
+
+    public void tablaPosiciones(View view){
+        Intent in = getIntent();
+        Intent intent = new Intent(ParticipantHomeActivity.this, TablaPosicionesActivity.class);
+        if (in != null && in.hasExtra("MI_REPOSITORIO")) {
+            ProyectoRepo pro = (ProyectoRepo) in.getSerializableExtra("MI_REPOSITORIO");
+            intent.putExtra("MI_REPOSITORIO",pro);
+        }
+        startActivity(intent);
     }
 }
