@@ -3,20 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:backgroundTint="#800A1118"
+    android:backgroundTintMode="src_over"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9FC"
+    android:background="@drawable/fondo4"
     tools:context=".ParticipantHomeActivity">
 
     <!-- 1. Imagen de decoración al fondo (Alineada abajo) -->
-    <ImageView
-        android:id="@+id/imgDecoracionFondo"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_alignParentBottom="true"
-        android:scaleType="fitEnd"
-        android:alpha="0.8"
-        app:srcCompat="@drawable/balones" />
 
     <!-- 2. Contenido principal (Header + Opciones) -->
     <LinearLayout
@@ -44,14 +38,17 @@
                 android:paddingBottom="20dp">
 
                 <!-- Opción 1: Tabla de posiciones -->
+
+                <!-- Opción 2: Pronósticos -->
                 <LinearLayout
-                    android:id="@+id/btnTablaPosiciones"
+                    android:id="@+id/btnSalirA"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
+
                     android:gravity="center_vertical"
                     android:onClick="tablaPosiciones"
                     android:paddingHorizontal="16dp">
@@ -60,15 +57,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@android:drawable/ic_menu_compass"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-medium"
                         android:text="Tabla de posiciones"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -76,18 +74,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="❯"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Opción 2: Pronósticos -->
                 <LinearLayout
                     android:id="@+id/btnPronosticos"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -97,15 +94,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/logo"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-medium"
                         android:text="Pronósticos"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -113,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="❯"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -124,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -134,15 +132,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@android:drawable/ic_menu_agenda"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:text="Mis pronósticos"
-                        android:textColor="#0A192F"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Mis Pronósticos"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -150,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="❯"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -161,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -171,15 +170,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@android:drawable/ic_lock_power_off"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-medium"
                         android:text="Salir"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 

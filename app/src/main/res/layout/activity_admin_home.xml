@@ -3,9 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:backgroundTint="#800A1118"
+    android:backgroundTintMode="src_over"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminHomeActivity">
+    android:background="@drawable/fondo4"
+    tools:context=".AdminHomeActivity" >
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -41,9 +45,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
+
                     android:gravity="center_vertical"
                     android:onClick="administrarPartidos"
                     android:paddingHorizontal="16dp">
@@ -52,15 +57,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@android:drawable/ic_menu_compass"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-medium"
                         android:text="Administrar partidos"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -68,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="❯"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -79,9 +85,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
+
                     android:gravity="center_vertical"
                     android:onClick="actualizarPuntajes"
                     android:paddingHorizontal="16dp">
@@ -90,15 +97,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/logo"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-medium"
                         android:text="Actualizar puntajes"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -106,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="❯"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -115,13 +123,14 @@
 
                 <!-- Opción 4: Salir -->
                 <LinearLayout
-                    android:id="@+id/btnSalir"
+                    android:id="@+id/btnSalirA"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_opcion_card"
+                    android:background="@drawable/bg_tarjeta_menu"
                     android:clickable="true"
                     android:focusable="true"
+
                     android:gravity="center_vertical"
                     android:onClick="salir"
                     android:paddingHorizontal="16dp">
@@ -130,15 +139,16 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@android:drawable/ic_lock_power_off"
-                        app:tint="#0A192F" />
+                        app:tint="#FFFFFF" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed-medium"
                         android:text="Salir"
-                        android:textColor="#0A192F"
+                        android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 

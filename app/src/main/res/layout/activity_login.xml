@@ -26,10 +26,10 @@
         app:layout_constraintVertical_bias="1.0">
 
         <ImageView
-            android:layout_marginTop="18dp"
             android:id="@+id/imgLogo"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="254dp"
+            android:layout_marginTop="18dp"
             app:srcCompat="@drawable/logo3" />
 
         <TextView
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/input_redondeado"
             android:hint="Ingrese su contraseña"
             android:inputType="textPassword"
@@ -101,6 +101,7 @@
             android:id="@+id/btnIngresar"
             android:layout_width="match_parent"
             android:layout_height="57dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="30sp"
             android:layout_marginRight="30dp"
             android:background="@drawable/bg_boton_moderno"
@@ -111,6 +112,21 @@
             android:textColorLink="#A01C1C"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnVolver"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/bg_boton_moderno"
+            android:backgroundTint="#D90A1128"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Volver"
+            android:textAllCaps="false"
+            android:textColorLink="#A01C1C"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

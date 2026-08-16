@@ -33,7 +33,6 @@ public class ParticipantHomeActivity extends AppCompatActivity {
             return insets;
         });
 
-
         nombreUsuario = findViewById(R.id.lblNombreHeader);
         rolUsuario = findViewById(R.id.lblRolHeader);
 
@@ -48,6 +47,12 @@ public class ParticipantHomeActivity extends AppCompatActivity {
                 rolUsuario.setText(usuarioActual.getTipoUsuario().toString());
             }
         }
+    }
+    public void salir(View view) {
+        Intent intent = new Intent(ParticipantHomeActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     public void tablaPosiciones(View view){

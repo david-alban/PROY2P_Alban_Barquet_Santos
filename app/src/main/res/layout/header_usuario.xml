@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="140dp"
-    android:background="@drawable/fondo_gradiente"
+    android:background="@drawable/bg_header_curvo"
+    android:paddingBottom="24dp"
     android:padding="16dp">
 
     <!-- 1. Foto / Avatar de perfil (Izquierda) -->
@@ -19,13 +20,13 @@
     <!-- 2. Logo / Balón del Mundial (Derecha) - Con ajuste de proporción -->
     <ImageView
         android:id="@+id/imgLogoMundial"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo3" />
 
     <!-- 3. Contenedor central con los Textos -->
     <LinearLayout
@@ -42,25 +43,29 @@
             android:id="@+id/lblBienvenido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
             android:text="Bienvenido,"
             android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lblNombreHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
             android:text="Juan Pérez"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lblRolHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="Participante"
-            android:textColor="#4CAF50"
+            android:textColor="#FBBF24"
             android:textSize="14sp"
             android:textStyle="bold" />
 
