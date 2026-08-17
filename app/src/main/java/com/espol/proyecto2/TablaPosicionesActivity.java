@@ -3,6 +3,7 @@ package com.espol.proyecto2;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import Modelo.Participante;
 import Modelo.ProyectoRepo;
@@ -27,6 +29,7 @@ public class TablaPosicionesActivity extends AppCompatActivity {
     private TextView rolUsuario;
     private LinearLayout contenedorPuntajes;
     private ArrayList<Usuario> usuarios;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,10 +85,21 @@ public class TablaPosicionesActivity extends AppCompatActivity {
 
         contenedorPuntajes.addView(headerView);
 
-        int i = 0;
-        for (Usuario usuario : usuarios) {
-            if (usuario != null && usuario.getTipoUsuario() == TipoUsuario.PARTICIPANTE) {
+        ArrayList<Participante> participantes = new ArrayList<>();
+
+        for (Usuario usuario : usuarios){
+            if (usuario !=null && usuario.getTipoUsuario() == TipoUsuario.PARTICIPANTE){
                 Participante pa = (Participante) usuario;
+                participantes.add(pa);
+            }
+        }
+
+        Collections.sort(participantes);
+
+
+        int i = 0;
+        for (Participante participante : participantes) {
+            if (participante != null && participante.getTipoUsuario() == TipoUsuario.PARTICIPANTE) {
                 View vistaPuntajes = inflater.inflate(R.layout.item_posicion_ranking, contenedorPuntajes, false);
 
                 TextView posicion = vistaPuntajes.findViewById(R.id.lblPos);
@@ -93,9 +107,9 @@ public class TablaPosicionesActivity extends AppCompatActivity {
                 TextView puntajes = vistaPuntajes.findViewById(R.id.lblPuntos);
 
                 posicion.setText(String.valueOf(i + 1));
-                partcipante.setText(pa.getNombreUsuario());
+                partcipante.setText(participante.getNombreUsuario());
 
-                puntajes.setText(String.valueOf(pa.getPuntajeAcumulado()));
+                puntajes.setText(String.valueOf(participante.getPuntajeAcumulado()));
 
                 contenedorPuntajes.addView(vistaPuntajes);
                 i++;
