@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardPartidoPronostico"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/lblFechaHoraPartido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fecha y hora del partido" />
+
+    <TextView
+        android:id="@+id/lblEstadioPartido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estadio" />
+
+    <TextView
+        android:id="@+id/lblEstadoPartido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estado" />
+
+    <LinearLayout
+        android:id="@+id/filaSeleccion1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/imgSeleccion1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Icono de la selección 1" />
+
+        <TextView
+            android:id="@+id/lblSeleccion1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Selección 1" />
+
+        <EditText
+            android:id="@+id/txtGolesSel1"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:hint="Goles"
+            android:inputType="number"
+            android:maxLength="2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filaSeleccion2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/imgSeleccion2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Icono de la selección 2" />
+
+        <TextView
+            android:id="@+id/lblSeleccion2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Selección 2" />
+
+        <EditText
+            android:id="@+id/txtGolesSel2"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:hint="Goles"
+            android:inputType="number"
+            android:maxLength="2" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnGuardarPronostico"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Guardar pronóstico" />
+
+</LinearLayout>
