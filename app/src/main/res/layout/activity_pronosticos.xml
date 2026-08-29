@@ -81,7 +81,7 @@
             android:layout_marginBottom="6dp"
             android:elevation="0dp"
             android:gravity="center"
-            android:onClick="volver"
+
             android:text="Volver"
             android:textAlignment="center" />
     </LinearLayout>
