@@ -11,6 +11,7 @@ import Excepciones.CredencialesInvalidasException;
 public class ProyectoRepo implements Serializable {
     private ArrayList<Usuario> usuarios;
     private ArrayList<Partido> partidos;
+    private ArrayList<Pronostico> pronosticos;
     private Usuario usuarioLogueado;
     private ManejadorArchivos maArchivos = new ManejadorArchivos();
 
@@ -18,10 +19,12 @@ public class ProyectoRepo implements Serializable {
         cargarDatosLogin(context);
     }
     public void cargarDatosLogin(Context context){
+
         usuarios = maArchivos.leerUsuarios(context);
     }
     public void cargarDatosMenu(Context context){
         partidos = maArchivos.leerPartidos(context);
+        pronosticos = maArchivos.leerTodosLosPronosticos(context,usuarioLogueado.getIdUsuario());
         maArchivos.leerResultados(context);
     }
     public void autenticar(String usuarioIngresado, String contrasenaIngresada) throws CredencialesInvalidasException {
@@ -36,21 +39,56 @@ public class ProyectoRepo implements Serializable {
         throw new CredencialesInvalidasException();
     }
 
-    public void actualizarDatosParticipantes(Context context){
-        ArrayList<String> datos = new ArrayList<>();
-        datos.add("idUsuario;puntajeAcumulado");
-        for (Usuario usuario : usuarios) {
-            if (usuario != null && usuario.getTipoUsuario() == TipoUsuario.PARTICIPANTE) {
-                Participante pa = (Participante) usuario;
+    // Escritura
 
-                String id = (pa.getIdUsuario() != null) ? pa.getIdUsuario() : "N/A";
-                String str = id + ";" + pa.getPuntajeAcumulado();
-                datos.add(str);
+    public Partido buscarPartidoPorId(String idPartido) {
+        for (Partido p : partidos) {
+            if (p.getId().equals(idPartido)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public void guardarEnMemoria(Pronostico nuevoPronostico) {
+        boolean encontrado = false;
+
+        for (int i = 0; i < pronosticos.size(); i++) {
+            if (pronosticos.get(i).getIdPartido().equals(nuevoPronostico.getIdPartido())) {
+                pronosticos.set(i, nuevoPronostico);
+                encontrado = true;
+                break;
             }
         }
 
-        maArchivos.escribirLineas(context, "participantes.txt", datos, false);
+        if (!encontrado) {
+            pronosticos.add(nuevoPronostico);
+        }
     }
+
+    public boolean guardarPronostico(Context context, Pronostico nuevoPronostico, String claveFase) {
+        if (usuarioLogueado == null) return false;
+
+        guardarEnMemoria(nuevoPronostico);
+
+        ArrayList<Pronostico> pronosticosFase = new ArrayList<>();
+        for (Pronostico p : pronosticos) {
+            Partido partidoAsociado = buscarPartidoPorId(p.getIdPartido());
+            if (partidoAsociado != null && partidoAsociado.getFase() != null) {
+                if (partidoAsociado.getFase().equalsIgnoreCase(claveFase)) {
+                    pronosticosFase.add(p);
+                }
+            }
+        }
+
+        String faseFormateada = claveFase.trim().toLowerCase().replace(" ", "_");
+        String idUsuario = usuarioLogueado.getIdUsuario();
+        String nombreArchivo = "pronostico_" + idUsuario + "_" + faseFormateada + ".dat";
+
+        return maArchivos.serializar(context, pronosticosFase, nombreArchivo);
+    }
+
+    // getters y setters
     public ArrayList<Usuario> getUsuarios(){
         return usuarios;
     }
