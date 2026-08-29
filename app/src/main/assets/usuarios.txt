@@ -7,7 +7,7 @@ idUsuario;nombreUsuario;contrasena;nombreCompleto;tipoUsuario
 1006;smartinez;clave1006;Sofía Martínez;PARTICIPANTE
 1007;dlopez;clave1007;Diego López;PARTICIPANTE
 1008;asilva;clave1008;Andrea Silva;PARTICIPANTE
-1009;pruiz;clave1009;Pablo Ruiz;PARTICIPANTE
+1009;pruiz;clave1009;Pablo Ruiz;PARTICIPANmgonzalezTE
 1010;vromero;clave1010;Valeria Romero;PARTICIPANTE
 1011;cmendoza;clave1011;Camila Mendoza;PARTICIPANTE
 1012;jcastro;clave1012;Jorge Castro;PARTICIPANTE

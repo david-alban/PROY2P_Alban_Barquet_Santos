@@ -42,7 +42,7 @@ public class ParticipantHomeActivity extends AppCompatActivity {
 
             if (pro != null && pro.getUsuarioLogueado() != null) {
                 Participante usuarioActual = (Participante) pro.getUsuarioLogueado();
-
+                pro.cargarDatosMenu(this);
                 nombreUsuario.setText(usuarioActual.getNombreCompleto());
                 rolUsuario.setText(usuarioActual.getTipoUsuario().toString());
             }
@@ -56,6 +56,16 @@ public class ParticipantHomeActivity extends AppCompatActivity {
     public void tablaPosiciones(View view){
         Intent in = getIntent();
         Intent intent = new Intent(ParticipantHomeActivity.this, TablaPosicionesActivity.class);
+        if (in != null && in.hasExtra("MI_REPOSITORIO")) {
+            ProyectoRepo pro = (ProyectoRepo) in.getSerializableExtra("MI_REPOSITORIO");
+            intent.putExtra("MI_REPOSITORIO",pro);
+        }
+        startActivity(intent);
+    }
+
+    public void pronosticos(View view){
+        Intent in = getIntent();
+        Intent intent = new Intent(ParticipantHomeActivity.this, PronosticosActivity.class);
         if (in != null && in.hasExtra("MI_REPOSITORIO")) {
             ProyectoRepo pro = (ProyectoRepo) in.getSerializableExtra("MI_REPOSITORIO");
             intent.putExtra("MI_REPOSITORIO",pro);

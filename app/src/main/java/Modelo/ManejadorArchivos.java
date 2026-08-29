@@ -1,8 +1,10 @@
 package Modelo;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +16,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
@@ -182,7 +186,7 @@ public class ManejadorArchivos implements Serializable {
             String seleccion2 = datos[6];
             EstadoPartido estado = EstadoPartido.valueOf(datos[7]);
 
-            Partido partido = new Partido(id,fase,fecha,horaUTC,estadio,seleccion1,seleccion2);
+            Partido partido = new Partido(id,fase,fecha,horaUTC,estadio,estado,seleccion1,seleccion2);
             partidos.add(partido);
         }
         return partidos;
@@ -204,6 +208,38 @@ public class ManejadorArchivos implements Serializable {
         ArrayList<String> resultado;
         resultado = leerLineas(context,"resultados.txt");
         return resultado;
+    }
+
+    public ArrayList<Pronostico> leerTodosLosPronosticos(Context context, String idUsuario) {
+        ArrayList<Pronostico> todosLosPronosticos = new ArrayList<>();
+
+        String[] fases = {
+                "fase_de_grupos",
+                "dieciseisavos_de_final",
+                "octavos",
+                "cuartos_de_final",
+                "semifinales",
+                "tercer_lugar",
+                "final"
+        };
+
+        for (String fase : fases) {
+            String nombreArchivo = "pronostico_" + idUsuario + "_" + fase + ".dat";
+
+            try {
+                Object obj = deserializar(context, nombreArchivo);
+                if (obj instanceof ArrayList<?>) {
+                    ArrayList<Pronostico> pronosticosFase = (ArrayList<Pronostico>) obj;
+                    todosLosPronosticos.addAll(pronosticosFase);
+                }
+            } catch (FileNotFoundException e) {
+                // como el archivo en este punto no ha sido creado no se realiza ninguna accion
+            } catch (IOException e) {
+                Toast.makeText(context, "Error de lectura en: " + nombreArchivo, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return todosLosPronosticos;
     }
 
     public boolean escribirLineas(Context context, String nombreArchivo, ArrayList<String> lineas, boolean append) {
@@ -229,6 +265,29 @@ public class ManejadorArchivos implements Serializable {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean serializar(Context context, Object objeto, String nombreArchivo) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(context.openFileOutput(nombreArchivo, Context.MODE_PRIVATE))) {
+            oos.writeObject(objeto);
+            return true;
+        } catch (IOException e) {
+            Toast.makeText(context, "Error al guardar el archivo: " + nombreArchivo, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Object deserializar(Context context, String nombreArchivo) throws FileNotFoundException, IOException {
+        Object salida = null;
+
+        try (ObjectInputStream ois = new ObjectInputStream(context.openFileInput(nombreArchivo))) {
+            salida = ois.readObject();
+        } catch (ClassNotFoundException e) {
+            Toast.makeText(context, "Error: Clase del objeto no encontrada", Toast.LENGTH_SHORT).show();
+        }
+
+        return salida;
     }
 
 

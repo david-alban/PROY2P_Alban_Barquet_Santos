@@ -16,7 +16,7 @@ public class Partido implements Serializable {
     private int golesSeleccion1;
     private int golesSeleccion2;
 
-    public Partido(String id, String fase, String fecha, String hora, String estadio, String seleccion1, String seleccion2) {
+    public Partido(String id, String fase, String fecha, String hora, String estadio, EstadoPartido estado, String seleccion1, String seleccion2) {
         this.id = id;
         this.fase = fase;
         this.fecha = fecha;
@@ -24,7 +24,7 @@ public class Partido implements Serializable {
         this.estadio = estadio;
         this.seleccion1 = seleccion1;
         this.seleccion2 = seleccion2;
-        this.estado = EstadoPartido.ABIERTO;
+        this.estado = estado;
 
         this.golesSeleccion1 = 0;
         this.golesSeleccion2 = 0;

@@ -16,7 +16,6 @@
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
-        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,14 +51,19 @@
         <Spinner
             android:id="@+id/spFase"
             android:layout_width="match_parent"
-            android:layout_height="49dp" />
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/bg_spinner_rounded"
+            android:paddingHorizontal="12dp"
+            android:spinnerMode="dropdown" />
 
         <ScrollView
             android:id="@+id/scrollPartidosPronostico"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:rotationX="0">
+            android:fillViewport="true">
 
             <LinearLayout
                 android:id="@+id/contenedorPartidos"
@@ -73,11 +77,11 @@
             android:id="@+id/btnVolverPronosticos"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="6dp"
             android:elevation="0dp"
-            android:gravity="center|center_vertical"
-            android:paddingEnd="0dp"
-            android:paddingBottom="0dp"
+            android:gravity="center"
+            android:onClick="volver"
             android:text="Volver"
             android:textAlignment="center" />
     </LinearLayout>
