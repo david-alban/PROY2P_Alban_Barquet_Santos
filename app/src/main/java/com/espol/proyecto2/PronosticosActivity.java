@@ -1,9 +1,5 @@
 package com.espol.proyecto2;
 
-import static Modelo.EstadoPartido.ABIERTO;
-import static Modelo.EstadoPartido.CERRADO;
-import static Modelo.EstadoPartido.FINALIZADO;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,17 +22,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
+import Excepciones.DatosIncompletosException;
 import Modelo.EstadoPartido;
 import Modelo.Partido;
+import Modelo.Pronostico;
 import Modelo.ProyectoRepo;
 import Modelo.Usuario;
 
 public class PronosticosActivity extends AppCompatActivity {
     private TextView nombreUsuario;
+    private Usuario usuarioLogueado;
     private TextView rolUsuario;
     private Spinner spFase;
     private ArrayList<Partido> partidos;
     LinearLayout contenedorPartidos;
+    private ProyectoRepo pro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,20 +48,23 @@ public class PronosticosActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         contenedorPartidos = findViewById(R.id.contenedorPartidos);
         nombreUsuario = findViewById(R.id.lblNombreHeader);
         rolUsuario = findViewById(R.id.lblRolHeader);
+
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("MI_REPOSITORIO")) {
-            ProyectoRepo pro = (ProyectoRepo) intent.getSerializableExtra("MI_REPOSITORIO");
+            pro = (ProyectoRepo) intent.getSerializableExtra("MI_REPOSITORIO");
             partidos = pro.getPartidos();
             if (pro != null && pro.getUsuarioLogueado() != null) {
                 Usuario usuarioActual = pro.getUsuarioLogueado();
-
+                usuarioLogueado = usuarioActual;
                 nombreUsuario.setText(usuarioActual.getNombreCompleto());
                 rolUsuario.setText(usuarioActual.getTipoUsuario().toString());
             }
         }
+
         spFase = findViewById(R.id.spFase);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.fases_spinner,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -109,24 +113,89 @@ public class PronosticosActivity extends AppCompatActivity {
         // Creando los views de los partidos
         for(Partido p: partidos){
             if(p != null && p.getFase() != null && p.getFase().equals(fase)){
-                View vistaPartidos = inflater.inflate(R.layout.item_partido_pronostico,contenedorPartidos,false);
+                View vistaPartidos = inflater.inflate(R.layout.item_partido_pronostico, contenedorPartidos, false);
 
-                TextView lblFechaHoraPartido = vistaPartidos.findViewById(R.id.lblFechaHoraPartido);
-                TextView lblEstadioPartido = vistaPartidos.findViewById(R.id.lblEstadioPartido);
-                TextView lblEstadoPartido = vistaPartidos.findViewById(R.id.lblEstadoPartido);
-                TextView lblSeleccion1 = vistaPartidos.findViewById(R.id.lblSeleccion1);
-                TextView lblSeleccion2 = vistaPartidos.findViewById(R.id.lblSeleccion2);
-
-                lblFechaHoraPartido.setText(p.getFecha() + " - " + p.getHora());
-                lblEstadioPartido.setText(p.getEstadio());
-                lblSeleccion1.setText(p.getSeleccion1());
-                lblSeleccion2.setText(p.getSeleccion2());
-
+                llenarDatosPartido(vistaPartidos, p);
+                cargarPronosticoExistente(vistaPartidos, p);
+                configurarBotonGuardar(vistaPartidos, p);
                 configurarEstadoPartido(vistaPartidos, p);
+
                 contenedorPartidos.addView(vistaPartidos);
             }
         }
+    }
 
+    private void llenarDatosPartido(View vista, Partido p) {
+        TextView lblFechaHoraPartido = vista.findViewById(R.id.lblFechaHoraPartido);
+        TextView lblEstadioPartido = vista.findViewById(R.id.lblEstadioPartido);
+        TextView lblSeleccion1 = vista.findViewById(R.id.lblSeleccion1);
+        TextView lblSeleccion2 = vista.findViewById(R.id.lblSeleccion2);
+
+        lblFechaHoraPartido.setText(p.getFecha() + " - " + p.getHora());
+        lblEstadioPartido.setText(p.getEstadio());
+        lblSeleccion1.setText(p.getSeleccion1());
+        lblSeleccion2.setText(p.getSeleccion2());
+    }
+
+    private void cargarPronosticoExistente(View vista, Partido p) {
+        EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesSel1);
+        EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesSel2);
+        Button btnGuardar = vista.findViewById(R.id.btnGuardarPronostico);
+
+        if (pro != null && pro.getPronosticos() != null) {
+            for (Pronostico pron : pro.getPronosticos()) {
+                if (pron.getIdPartido().equals(p.getId())) {
+                    txtGolesSel1.setText(String.valueOf(pron.getGolesSel1()));
+                    txtGolesSel2.setText(String.valueOf(pron.getGolesSel2()));
+                    btnGuardar.setText("Actualizar pronóstico");
+                    return;
+                }
+            }
+        }
+    }
+
+    private void configurarBotonGuardar(View vista, Partido p) {
+        EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesSel1);
+        EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesSel2);
+        Button btnGuardar = vista.findViewById(R.id.btnGuardarPronostico);
+
+        btnGuardar.setOnClickListener(v -> {
+            try {
+                String goles1Str = txtGolesSel1.getText().toString().trim();
+                String goles2Str = txtGolesSel2.getText().toString().trim();
+
+                // Lanzar la excepción si algún campo está vacío
+                if (goles1Str.isEmpty() || goles2Str.isEmpty()) {
+                    throw new DatosIncompletosException("Debe ingresar ambos marcadores para guardar el pronóstico.");
+                }
+
+                int goles1 = Integer.parseInt(goles1Str);
+                int goles2 = Integer.parseInt(goles2Str);
+
+                String idPronostico = usuarioLogueado.getIdUsuario() + "_" + p.getId();
+
+                Pronostico nuevoPronostico = new Pronostico(
+                        idPronostico,
+                        usuarioLogueado.getIdUsuario(),
+                        p.getId(),
+                        goles1,
+                        goles2
+                );
+
+                String faseSeleccionada = spFase.getSelectedItem().toString();
+                boolean exito = pro.guardarPronostico(PronosticosActivity.this, nuevoPronostico, faseSeleccionada);
+
+                if (exito) {
+                    Toast.makeText(PronosticosActivity.this, "Pronóstico guardado exitosamente", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (DatosIncompletosException e) {
+                // Captura de la excepción propia
+                Toast.makeText(PronosticosActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (NumberFormatException e) {
+                Toast.makeText(PronosticosActivity.this, "Ingrese únicamente valores numéricos enteros", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void configurarEstadoPartido(View vista, Partido p) {
@@ -175,4 +244,16 @@ public class PronosticosActivity extends AppCompatActivity {
         }
     }
 
+    public void volver(View view) {
+        Intent intent = new Intent(PronosticosActivity.this, ParticipantHomeActivity.class);
+
+        if (pro != null) {
+            intent.putExtra("MI_REPOSITORIO", pro);
+        }
+
+        startActivity(intent);
+
+        // Cerramos la actividad actual
+        finish();
+    }
 }

@@ -97,5 +97,6 @@ public class ProyectoRepo implements Serializable {
     public void setUsuarios(ArrayList<Usuario> usuarios) { this.usuarios = usuarios; }
     public void setPartidos(ArrayList<Partido> partidos) { this.partidos = partidos; }
     public void setUsuarioLogueado(Usuario usuarioLogueado) { this.usuarioLogueado = usuarioLogueado; }
-
+    public ArrayList<Pronostico> getPronosticos() { return pronosticos;}
+    public void setPronosticos(ArrayList<Pronostico> pronosticos) { this.pronosticos = pronosticos; }
 }
