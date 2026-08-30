@@ -7,11 +7,11 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="8dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="#121827"
     app:cardCornerRadius="16dp"
-    app:cardElevation="3dp"
-    app:strokeColor="#E0E0E0"
-    app:strokeWidth="1dp">
+    app:cardElevation="0dp"
+    app:strokeColor="#1F2937"
+    app:strokeWidth="1.5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Cabecera: Fecha, Hora, Estadio y Estado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,20 +30,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:text="12 de junio de 2026 - 16:00"
-                android:textColor="#555555"
+                android:textColor="#9CA3AF"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/lblEstadoPartido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="3dp"
                 android:text="ABIERTO"
-                android:textColor="#2E7D32"
-                android:textSize="11sp"
+                android:textColor="#10B981"
+                android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -52,32 +49,31 @@
             android:id="@+id/lblEstadioPartido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
             android:paddingTop="4dp"
             android:text="Estadio Azteca"
-            android:textColor="#777777"
+            android:textColor="#9CA3AF"
             android:textSize="12sp" />
 
-        <!-- Subtítulo "Tu pronóstico" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="12dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingTop="10dp"
             android:text="Tu pronóstico"
             android:textAlignment="center"
-            android:textColor="#102A43"
-            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
-        <!-- Sección Equipos y Marcador -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="10dp"
+            android:paddingTop="8dp"
             android:paddingBottom="10dp">
 
-            <!-- Selección 1 -->
             <LinearLayout
                 android:id="@+id/filaSeleccion1"
                 android:layout_width="0dp"
@@ -97,13 +93,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:fontFamily="sans-serif-condensed-medium"
                     android:text="Selección 1"
-                    android:textColor="#102A43"
+                    android:textColor="#FFFFFF"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Cajas de Entrada de Goles -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,12 +111,13 @@
                     android:id="@+id/txtGolesSel1"
                     android:layout_width="50dp"
                     android:layout_height="44dp"
-
+                    android:background="@drawable/bg_card_neon"
                     android:gravity="center"
                     android:hint="0"
+                    android:textColorHint="#6B7280"
                     android:inputType="number"
                     android:maxLength="2"
-                    android:textColor="#102A43"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -129,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="-"
-                    android:textColor="#102A43"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -137,17 +134,17 @@
                     android:id="@+id/txtGolesSel2"
                     android:layout_width="50dp"
                     android:layout_height="44dp"
-
+                    android:background="@drawable/bg_card_neon"
                     android:gravity="center"
                     android:hint="0"
+                    android:textColorHint="#6B7280"
                     android:inputType="number"
                     android:maxLength="2"
-                    android:textColor="#102A43"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Selección 2 -->
             <LinearLayout
                 android:id="@+id/filaSeleccion2"
                 android:layout_width="0dp"
@@ -167,36 +164,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:fontFamily="sans-serif-condensed-medium"
                     android:text="Selección 2"
-                    android:textColor="#102A43"
+                    android:textColor="#FFFFFF"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
         </LinearLayout>
 
-        <!-- Mensaje Informativo para Cerrado / Finalizado -->
         <TextView
             android:id="@+id/lblMensajeEstado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:padding="8dp"
+            android:textColor="#FBBF24"
             android:textAlignment="center"
             android:textSize="12sp"
             android:visibility="gone" />
 
-        <!-- Botón Guardar Pronóstico -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnGuardarPronostico"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#008744"
+            android:background="@drawable/bg_boton_moderno"
+            android:fontFamily="sans-serif-condensed-medium"
             android:text="Guardar pronóstico"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>

@@ -5,6 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTintMode="src_over"
+    android:backgroundTint="#800A1118"
     android:background="@drawable/fondo4"
     tools:context=".ActualizarPuntajesActivity">
 
