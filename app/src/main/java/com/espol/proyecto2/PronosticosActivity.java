@@ -133,7 +133,17 @@ public class PronosticosActivity extends AppCompatActivity {
         TextView lblEstadioPartido = vista.findViewById(R.id.lblEstadioPartido);
         TextView lblSeleccion1 = vista.findViewById(R.id.lblSeleccion1);
         TextView lblSeleccion2 = vista.findViewById(R.id.lblSeleccion2);
+        android.widget.ImageView imgSeleccion1 = vista.findViewById(R.id.imgSeleccion1);
+        android.widget.ImageView imgSeleccion2 = vista.findViewById(R.id.imgSeleccion2);
 
+        int idBandera1 = obtenerIdBandera(p.getSeleccion1(), vista);
+        if (idBandera1 != 0) {
+            imgSeleccion1.setImageResource(idBandera1);
+        }
+        int idBandera2 = obtenerIdBandera(p.getSeleccion2(), vista);
+        if (idBandera2 != 0) {
+            imgSeleccion2.setImageResource(idBandera2);
+        }
         lblFechaHoraPartido.setText(p.getFecha() + " - " + p.getHora());
         lblEstadioPartido.setText(p.getEstadio());
         lblSeleccion1.setText(p.getSeleccion1());
@@ -259,5 +269,25 @@ public class PronosticosActivity extends AppCompatActivity {
 
         // Cerramos la actividad actual
         finish();
+    }
+    private int obtenerIdBandera(String nombrePais, View vista) {
+        if (nombrePais == null || nombrePais.isEmpty()) return 0;
+
+        String nombreLimpio = nombrePais.toLowerCase()
+                .replace(" ", "_")
+                .replace("á", "a")
+                .replace("é", "e")
+                .replace("í", "i")
+                .replace("ó", "o")
+                .replace("ú", "u")
+                .replace("ñ", "n");
+
+        String nombreRecurso = "bandera_" + nombreLimpio;
+
+        return vista.getContext().getResources().getIdentifier(
+                nombreRecurso,
+                "drawable",
+                vista.getContext().getPackageName()
+        );
     }
 }
