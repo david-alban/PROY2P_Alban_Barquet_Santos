@@ -20,7 +20,6 @@ public class AdminHomeActivity extends AppCompatActivity {
     private TextView userRol;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +40,7 @@ public class AdminHomeActivity extends AppCompatActivity {
 
             if (pro != null && pro.getUsuarioLogueado() != null) {
                 Administrador usuarioActual = (Administrador) pro.getUsuarioLogueado();
+                pro.cargarDatosMenu(this);
 
                 userName.setText(usuarioActual.getNombreCompleto());
                 userRol.setText(usuarioActual.getTipoUsuario().toString());
@@ -48,20 +48,31 @@ public class AdminHomeActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void administrarPartidos(View view) {
+        Intent in = getIntent();
+        Intent intent = new Intent(AdminHomeActivity.this, AdministrarPartidosActivity.class);
+
+        if (in != null && in.hasExtra("MI_REPOSITORIO")) {
+            ProyectoRepo pro = (ProyectoRepo) in.getSerializableExtra("MI_REPOSITORIO");
+
+            intent.putExtra("MI_REPOSITORIO", pro);
+        }
+
+        startActivity(intent);
 
     }
-    public void administrarPartidos (View view){
-        Toast.makeText(this,"Prueba Adminsitrar Partidos",Toast.LENGTH_SHORT).show();
+
+    public void actualizarPuntajes(View view) {
+        Toast.makeText(this, "Prueba Actualizar Puntajes", Toast.LENGTH_SHORT).show();
 
     }
-    public void actualizarPuntajes (View view){
-        Toast.makeText(this,"Prueba Actualizar Puntajes",Toast.LENGTH_SHORT).show();
 
-    }
-    public void salir (View view){
+    public void salir(View view) {
         finishAffinity();
 
     }
-    }
+}
 
 

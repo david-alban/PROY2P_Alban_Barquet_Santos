@@ -44,10 +44,22 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/spFaseAdministrar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="49dp" />
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/input_redondeado"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spFaseAdministrar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#FFFFFF"
+                android:paddingHorizontal="8dp"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
 
         <ScrollView
             android:id="@+id/scrollAdministrarPartidos"
@@ -66,6 +78,7 @@
 
         <Button
             android:id="@+id/btnVolverAdministrarPartidos"
+            android:onClick="volver"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:text="Volver" />

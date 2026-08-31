@@ -78,6 +78,9 @@ public class PronosticosActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String faseSeleccionada = parent.getItemAtPosition(position).toString();
 
+                TextView textoSeleccionado = (TextView) view;
+                textoSeleccionado.setTextColor(Color.WHITE);
+
                 // Convertir texto a formato
                 String claveFase = faseSeleccionada.toUpperCase()
                         .replace(" ", "_")
