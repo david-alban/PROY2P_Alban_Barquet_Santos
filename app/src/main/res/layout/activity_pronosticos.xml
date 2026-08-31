@@ -102,6 +102,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/bg_boton_moderno"
             android:fontFamily="sans-serif-condensed-medium"
+            android:onClick="volver"
             android:text="Volver al menú principal"
             android:textColor="#FFFFFF"
             android:textSize="14sp"

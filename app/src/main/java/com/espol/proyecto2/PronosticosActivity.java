@@ -185,7 +185,8 @@ public class PronosticosActivity extends AppCompatActivity {
                         goles2
                 );
 
-                String faseSeleccionada = spFase.getSelectedItem().toString();
+
+                String faseSeleccionada = p.getFase();
                 boolean exito = pro.guardarPronostico(PronosticosActivity.this, nuevoPronostico, faseSeleccionada);
 
                 if (exito) {

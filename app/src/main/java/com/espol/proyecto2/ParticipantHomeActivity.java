@@ -72,4 +72,14 @@ public class ParticipantHomeActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
+
+    public void misPronosticos(View view){
+        Intent in = getIntent();
+        Intent intent = new Intent(ParticipantHomeActivity.this, MisPronosticosActivity.class);
+        if (in != null && in.hasExtra("MI_REPOSITORIO")) {
+            ProyectoRepo pro = (ProyectoRepo) in.getSerializableExtra("MI_REPOSITORIO");
+            intent.putExtra("MI_REPOSITORIO",pro);
+        }
+        startActivity(intent);
+    }
 }
