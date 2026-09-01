@@ -24,6 +24,8 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Excepciones.DatosIncompletosException;
+
 public class ManejadorArchivos implements Serializable {
 
     public ArrayList<String> leerLineas(Context context, String nombreArchivo) {
@@ -31,10 +33,7 @@ public class ManejadorArchivos implements Serializable {
         File archivoInterno = new File(context.getFilesDir(), nombreArchivo);
 
         if (!archivoInterno.exists()) {
-            try (
-                    InputStream entrada = context.getAssets().open(nombreArchivo);
-                    OutputStream salida = context.openFileOutput(nombreArchivo, Context.MODE_PRIVATE)
-            ) {
+            try (InputStream entrada = context.getAssets().open(nombreArchivo); OutputStream salida = context.openFileOutput(nombreArchivo, Context.MODE_PRIVATE)) {
                 byte[] buffer = new byte[1024];
                 int cantidadBytes;
                 while ((cantidadBytes = entrada.read(buffer)) != -1) {
@@ -46,10 +45,7 @@ public class ManejadorArchivos implements Serializable {
             }
         }
 
-        try (
-                FileInputStream fis = new FileInputStream(archivoInterno);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(fis))
-        ) {
+        try (FileInputStream fis = new FileInputStream(archivoInterno); BufferedReader reader = new BufferedReader(new InputStreamReader(fis))) {
             //Saltar el encabezado
             String linea = reader.readLine();
             //Recorrer las lineas
@@ -64,6 +60,7 @@ public class ManejadorArchivos implements Serializable {
 
         return lineas;
     }
+
     public ArrayList<Usuario> leerUsuarios(Context context) {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         ArrayList<String> lineas = leerLineas(context, "usuarios.txt");
@@ -172,11 +169,11 @@ public class ManejadorArchivos implements Serializable {
         return usuarios;
     }
 
-    public ArrayList<Partido> leerPartidos(Context context){
+    public ArrayList<Partido> leerPartidos(Context context) {
         ArrayList<Partido> partidos = new ArrayList<>();
-        ArrayList<String> lineas = leerLineas(context,"partidos.txt");
+        ArrayList<String> lineas = leerLineas(context, "partidos.txt");
 
-        for(String linea:lineas){
+        for (String linea : lineas) {
             String[] datos = linea.split(";");
             String id = datos[0];
             String fase = datos[1];
@@ -187,42 +184,62 @@ public class ManejadorArchivos implements Serializable {
             String seleccion2 = datos[6];
             EstadoPartido estado = EstadoPartido.valueOf(datos[7]);
 
-            Partido partido = new Partido(id,fase,fecha,horaUTC,estadio,estado,seleccion1,seleccion2);
+            Partido partido = new Partido(id, fase, fecha, horaUTC, estadio, estado, seleccion1, seleccion2);
             partidos.add(partido);
         }
         return partidos;
     }
 
-    public ArrayList<String> leerParticipantes(Context context){
+    public ArrayList<String> leerParticipantes(Context context) {
         ArrayList<String> resultado;
-        resultado = leerLineas(context,"participantes.txt");
+        resultado = leerLineas(context, "participantes.txt");
         return resultado;
     }
 
-    public ArrayList<String> leerAdmins(Context context){
+    public ArrayList<String> leerAdmins(Context context) {
         ArrayList<String> resultado;
-        resultado = leerLineas(context,"administradores.txt");
+        resultado = leerLineas(context, "administradores.txt");
         return resultado;
     }
 
-    public ArrayList<String> leerResultados(Context context){
+    public ArrayList<String> leerResultados(Context context, ArrayList<Partido> partidos) {
+
         ArrayList<String> resultado;
-        resultado = leerLineas(context,"resultados.txt");
+        resultado = leerLineas(context, "resultados.txt");
+        if (partidos == null) {
+            return resultado;
+        }
+        for (String linea : resultado) {
+            String datos[] = linea.trim().split(";");
+
+            if (datos.length == 4) {
+                try {
+
+                    String idPartido = datos[1];
+                    int goles1 = Integer.parseInt(datos[2]);
+                    int goles2 = Integer.parseInt(datos[3]);
+
+                    for (Partido partido : partidos) {
+                        if (partido.getId().equals(idPartido)) {
+                            partido.registrarResultadoOficial(goles1, goles2);
+                            break;
+                        }
+                    }
+
+
+                } catch (DatosIncompletosException e) {
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }
         return resultado;
     }
 
     public ArrayList<Pronostico> leerTodosLosPronosticos(Context context, String idUsuario) {
         ArrayList<Pronostico> todosLosPronosticos = new ArrayList<>();
 
-        String[] fases = {
-                "fase_de_grupos",
-                "dieciseisavos_de_final",
-                "octavos",
-                "cuartos_de_final",
-                "semifinales",
-                "tercer_lugar",
-                "final"
-        };
+        String[] fases = {"fase_de_grupos", "dieciseisavos_de_final", "octavos", "cuartos_de_final", "semifinales", "tercer_lugar", "final"};
 
         for (String fase : fases) {
             String nombreArchivo = "pronostico_" + idUsuario + "_" + fase + ".dat";
@@ -252,8 +269,7 @@ public class ManejadorArchivos implements Serializable {
             modo = Context.MODE_PRIVATE;
         }
 
-        try (FileOutputStream fos = context.openFileOutput(nombreArchivo, modo);
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos))) {
+        try (FileOutputStream fos = context.openFileOutput(nombreArchivo, modo); BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos))) {
 
             for (int i = 0; i < lineas.size(); i++) {
                 writer.write(lineas.get(i));
@@ -297,20 +313,16 @@ public class ManejadorArchivos implements Serializable {
         try {
             FileInputStream fis = context.openFileInput("partidos.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-            String linea;
+            String linea = reader.readLine();
+            if (linea != null) {
+                lineasNuevas.add(linea);
+            }
 
             while ((linea = reader.readLine()) != null) {
-                String[] datos = linea.split(",");
+                String[] datos = linea.split(";");
                 int idActual = Integer.parseInt(datos[0].trim());
                 if (idActual == Integer.parseInt(partidoModificado.getId())) {
-                    String nuevaLinea = partidoModificado.getId() + "," +
-                            partidoModificado.getFase() + "," +
-                            partidoModificado.getFecha() + "," +
-                            partidoModificado.getHora() + "," +
-                            partidoModificado.getEstadio() + "," +
-                            partidoModificado.getSeleccion1() + "," +
-                            partidoModificado.getSeleccion2() + "," +
-                            partidoModificado.getEstado().toString();
+                    String nuevaLinea = partidoModificado.getId() + ";" + partidoModificado.getFase() + ";" + partidoModificado.getFecha() + ";" + partidoModificado.getHora() + ";" + partidoModificado.getEstadio() + ";" + partidoModificado.getSeleccion1() + ";" + partidoModificado.getSeleccion2() + ";" + partidoModificado.getEstado().toString();
 
                     lineasNuevas.add(nuevaLinea);
                 } else {
@@ -336,7 +348,7 @@ public class ManejadorArchivos implements Serializable {
             FileOutputStream fos = context.openFileOutput("resultados.txt", Context.MODE_APPEND);
             PrintWriter writer = new PrintWriter(fos);
             long idResultado = System.currentTimeMillis();
-            String linea = idResultado + "," + idPartido + "," + goles1 + "," + goles2;
+            String linea = idResultado + ";" + idPartido + ";" + goles1 + ";" + goles2;
 
             writer.println(linea);
             writer.close();

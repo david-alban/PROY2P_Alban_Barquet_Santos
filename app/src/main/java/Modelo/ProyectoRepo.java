@@ -25,7 +25,7 @@ public class ProyectoRepo implements Serializable {
     public void cargarDatosMenu(Context context){
         partidos = maArchivos.leerPartidos(context);
         pronosticos = maArchivos.leerTodosLosPronosticos(context,usuarioLogueado.getIdUsuario());
-        maArchivos.leerResultados(context);
+        maArchivos.leerResultados(context, partidos);
     }
     public void autenticar(String usuarioIngresado, String contrasenaIngresada) throws CredencialesInvalidasException {
         for (Usuario usuario : usuarios) {

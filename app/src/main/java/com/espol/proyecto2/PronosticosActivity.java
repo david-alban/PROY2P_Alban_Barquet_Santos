@@ -250,7 +250,7 @@ public class PronosticosActivity extends AppCompatActivity {
                     txtGoles2.setEnabled(false);
                     btnGuardar.setVisibility(View.GONE);
                     lblMensaje.setVisibility(View.VISIBLE);
-                    lblMensaje.setText("¡Partido finalizado! Ya conoces tus puntos.");
+                    lblMensaje.setText("Partido Finalizado!!\n"+"Resultado Oficial: "+p.getGolesSeleccion1()+" - "+p.getGolesSeleccion2());
                     lblMensaje.setBackgroundColor(Color.parseColor("#D4EDDA"));
                     lblMensaje.setTextColor(Color.parseColor("#155724"));
                     break;
