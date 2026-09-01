@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -288,6 +289,57 @@ public class ManejadorArchivos implements Serializable {
         }
 
         return salida;
+    }
+
+    public static void actualizarEstadoPartido(Context context, Partido partidoModificado) {
+        ArrayList<String> lineasNuevas = new ArrayList<>();
+
+        try {
+            FileInputStream fis = context.openFileInput("partidos.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+            String linea;
+
+            while ((linea = reader.readLine()) != null) {
+                String[] datos = linea.split(",");
+                int idActual = Integer.parseInt(datos[0].trim());
+
+                if (idActual == Integer.parseInt(partidoModificado.getId())) {
+                    String nuevaLinea = partidoModificado.getId() + "," +
+                            partidoModificado.getFase() + "," +
+                            partidoModificado.getEstado().toString();
+                    lineasNuevas.add(nuevaLinea);
+                } else {
+                    lineasNuevas.add(linea);
+                }
+            }
+            reader.close();
+
+            FileOutputStream fos = context.openFileOutput("partidos.txt", Context.MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(fos);
+            for (String l : lineasNuevas) {
+                writer.println(l);
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void guardarResultadoOficial(Context context, int idPartido, int goles1, int goles2) {
+        try {
+
+            FileOutputStream fos = context.openFileOutput("resultados.txt", Context.MODE_APPEND);
+            PrintWriter writer = new PrintWriter(fos);
+            int idResultado = (int) System.currentTimeMillis();
+            String linea = idResultado + "," + idPartido + "," + goles1 + "," + goles2;
+
+            writer.println(linea);
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -1,85 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTintMode="src_over"
-    android:backgroundTint="#800A1118"
     android:background="@drawable/fondo4"
+    android:backgroundTint="#D90A1128"
+    android:backgroundTintMode="src_over"
     tools:context=".ActualizarPuntajesActivity">
 
     <LinearLayout
         android:id="@+id/layoutActualizarPuntajes"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <include
-            layout="@layout/header_usuario"
-            android:layout_width="match_parent"
-            android:layout_height="140dp" />
+        <include layout="@layout/header_usuario" />
 
-        <TextView
-            android:id="@+id/lblTituloActualizarPuntajes"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_card_partido"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ⓘ"
+                android:textColor="#9CA3AF"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lblExplicacionActualizarPuntajes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Esta opción calcula los puntos de todos los participantes tomando en cuenta los resultados oficiales de los partidos finalizados."
+                android:textColor="#9CA3AF"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp"
+            android:clipToPadding="false"
+            android:fillViewport="true"
             android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:text="Actualizar puntajes"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:paddingBottom="24dp">
 
-        <TextView
-            android:id="@+id/lblExplicacionActualizarPuntajes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Esta opción calculará nuevamente los puntos de todos los participantes utilizando los resultados oficiales de los partidos finalizados."
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/bg_card_partido"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/lblTituloActualizarPuntajes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:paddingTop="8dp"
+                    android:text="Actualizar puntajes"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnEjecutarActualizacion"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="Actualizar puntajes" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="16dp"
+                    android:text="Al seleccionar el botón, el sistema recorrerá todos los pronósticos y actualizará el puntaje acumulado de cada participante según los resultados oficiales."
+                    android:textAlignment="center"
+                    android:textColor="#D1D5DB"
+                    android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/lblMensajeActualizacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Los puntajes todavía no han sido actualizados."
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:paddingBottom="12dp"
+                    android:text="Reglas de puntuación por partido"
+                    android:textColor="#10B981"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/input_redondeado"
+                        android:backgroundTint="#1B4D3E"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="3 puntos"
+                        android:textColor="#34D399"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Acierta el marcador exacto."
+                        android:textColor="#D1D5DB"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
-        <Button
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/input_redondeado"
+                        android:backgroundTint="#1B4D3E"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="2 puntos"
+                        android:textColor="#34D399"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Acierta el ganador y la diferencia de goles."
+                        android:textColor="#D1D5DB"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/input_redondeado"
+                        android:backgroundTint="#1B4D3E"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="2 puntos"
+                        android:textColor="#34D399"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Acierta un empate (sin marcador exacto)."
+                        android:textColor="#D1D5DB"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/input_redondeado"
+                        android:backgroundTint="#1B4D3E"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="1 punto"
+                        android:textColor="#34D399"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Acierta únicamente el ganador del partido."
+                        android:textColor="#D1D5DB"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/input_redondeado"
+                        android:backgroundTint="#374151"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="0 puntos"
+                        android:textColor="#9CA3AF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Cualquier otro caso."
+                        android:textColor="#D1D5DB"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnEjecutarActualizacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_boton_moderno"
+                    android:backgroundTint="#10B981"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="Actualizar puntajes"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="#1F2937"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⚠"
+                        android:textColor="#9CA3AF"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/lblMensajeActualizacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:text="Al ejecutar esta opción, los puntajes actuales de todos los participantes se reiniciarán a cero y se recalcularán."
+                        android:textColor="#9CA3AF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnVolverActualizarPuntajes"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="Volver" />
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_boton_moderno"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Volver al menú principal"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

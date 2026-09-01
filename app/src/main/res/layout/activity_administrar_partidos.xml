@@ -1,88 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo4"
+    android:backgroundTint="#D90A1128"
+    android:backgroundTintMode="src_over"
     tools:context=".AdministrarPartidosActivity">
 
     <LinearLayout
         android:id="@+id/layoutAdministrarPartidos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <include
-            layout="@layout/header_usuario"
-            android:layout_width="match_parent"
-            android:layout_height="140dp" />
+        <include layout="@layout/header_usuario" />
 
         <TextView
             android:id="@+id/lblTituloAdministrarPartidos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="12dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingTop="16dp"
             android:paddingBottom="12dp"
             android:text="Administrar partidos"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/lblSeleccionFaseAdministrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Seleccione la fase del torneo"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/input_redondeado"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_card_partido"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Spinner
-                android:id="@+id/spFaseAdministrar"
+            <TextView
+                android:id="@+id/lblSeleccionFaseAdministrar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="#FFFFFF"
-                android:paddingHorizontal="8dp"
-                android:spinnerMode="dropdown" />
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Fase del torneo"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/input_redondeado"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spFaseAdministrar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#FFFFFF"
+                    android:paddingHorizontal="8dp"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="ⓘ Selecciona una fase para gestionar el estado de los partidos."
+                android:textColor="#6B7280"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <ScrollView
             android:id="@+id/scrollAdministrarPartidos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingBottom="24dp">
 
             <LinearLayout
                 android:id="@+id/contenedorAdministrarPartidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp" />
-
+                android:paddingHorizontal="4dp" />
         </ScrollView>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnVolverAdministrarPartidos"
-            android:onClick="volver"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="Volver" />
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_boton_moderno"
+            android:onClick="volver"
+            android:text="Volver al menú principal"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import Excepciones.DatosIncompletosException;
 import Modelo.Administrador;
+import Modelo.ManejadorArchivos;
 import Modelo.Partido;
 import Modelo.ProyectoRepo;
 
@@ -173,11 +174,14 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
 
                 int goles1 = Integer.parseInt(goles1Str);
                 int goles2 = Integer.parseInt(goles2Str);
-
+                if (goles1 < 0 || goles2 < 0) {
+                    throw new DatosIncompletosException("Los goles no pueden ser negativos.");
+                }
                 p.registrarResultadoOficial(goles1, goles2);
 
+                ManejadorArchivos.guardarResultadoOficial(AdministrarPartidosActivity.this, Integer.parseInt(p.getId()), goles1, goles2);
+                ManejadorArchivos.actualizarEstadoPartido(AdministrarPartidosActivity.this, p);
                 Toast.makeText(AdministrarPartidosActivity.this, "Resultado guardado exitosamente", Toast.LENGTH_SHORT).show();
-
                 mostrarPartidos(p.getFase());
 
             } catch (DatosIncompletosException e) {
@@ -190,6 +194,7 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
 
         btnCerrar.setOnClickListener(v -> {
             p.cerrarPronosticos();
+            ManejadorArchivos.actualizarEstadoPartido(AdministrarPartidosActivity.this, p);
 
             Toast.makeText(AdministrarPartidosActivity.this, "Pronósticos cerrados exitosamente", Toast.LENGTH_SHORT).show();
 

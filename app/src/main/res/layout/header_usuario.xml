@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="110dp"
     android:background="@drawable/bg_header_curvo"
-    android:paddingBottom="24dp"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp">
 
-    <!-- 1. Foto / Avatar de perfil (Izquierda) -->
-    <ImageView
-        android:id="@+id/imgProfileHeader"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/marcoFoto"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/shreck" />
+        app:cardBackgroundColor="#1F2937"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#10B981"
+        app:strokeWidth="1.5dp">
 
-    <!-- 2. Logo / Balón del Mundial (Derecha) - Con ajuste de proporción -->
-    <ImageView
-        android:id="@+id/imgLogoMundial"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@drawable/logo3" />
+        <ImageView
+            android:id="@+id/imgProfileHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/shreck" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <!-- 3. Contenedor central con los Textos -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/imgProfileHeader"
-        android:layout_toStartOf="@id/imgLogoMundial"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_toStartOf="@id/layoutDerecha"
+        android:layout_toEndOf="@id/marcoFoto"
         android:orientation="vertical">
 
         <TextView
@@ -44,10 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="Bienvenido,"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:text="Bienvenido de vuelta 👋"
+            android:textColor="#9CA3AF"
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/lblNombreHeader"
@@ -56,19 +53,67 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:text="Juan Pérez"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lblRolHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/input_redondeado"
+            android:backgroundTint="#374151"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
             android:text="Participante"
             android:textColor="#FBBF24"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layoutDerecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/input_redondeado"
+            android:backgroundTint="#1F2937">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="🔔"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/input_redondeado"
+                android:backgroundTint="#EF4444" />
+        </FrameLayout>
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/imgLogoMundial"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo3" />
+
+    </LinearLayout>
 </RelativeLayout>
