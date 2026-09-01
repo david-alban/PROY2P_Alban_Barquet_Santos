@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 import Excepciones.DatosIncompletosException;
+import Excepciones.PronosticoFueraDeTiempoException;
 import Modelo.EstadoPartido;
 import Modelo.Partido;
 import Modelo.Pronostico;
@@ -66,7 +67,7 @@ public class PronosticosActivity extends AppCompatActivity {
         }
 
         spFase = findViewById(R.id.spFase);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.fases_spinner,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.fases_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFase.setAdapter(adapter);
 
@@ -82,10 +83,7 @@ public class PronosticosActivity extends AppCompatActivity {
                 textoSeleccionado.setTextColor(Color.WHITE);
 
                 // Convertir texto a formato
-                String claveFase = faseSeleccionada.toUpperCase()
-                        .replace(" ", "_")
-                        .replace("Í", "I")
-                        .replace("É", "E");
+                String claveFase = faseSeleccionada.toUpperCase().replace(" ", "_").replace("Í", "I").replace("É", "E");
 
                 // Ajuste para la fase de 16avos
                 if (claveFase.equals("DIECISEISAVOS")) {
@@ -107,15 +105,15 @@ public class PronosticosActivity extends AppCompatActivity {
 
     }
 
-    public void mostrarPronosticos(String fase){
+    public void mostrarPronosticos(String fase) {
         if (partidos == null) return;
 
         contenedorPartidos.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
         // Creando los views de los partidos
-        for(Partido p: partidos){
-            if(p != null && p.getFase() != null && p.getFase().equals(fase)){
+        for (Partido p : partidos) {
+            if (p != null && p.getFase() != null && p.getFase().equals(fase)) {
                 View vistaPartidos = inflater.inflate(R.layout.item_partido_pronostico, contenedorPartidos, false);
 
                 llenarDatosPartido(vistaPartidos, p);
@@ -174,6 +172,9 @@ public class PronosticosActivity extends AppCompatActivity {
 
         btnGuardar.setOnClickListener(v -> {
             try {
+                if (p.getEstado() != EstadoPartido.ABIERTO) {
+                    throw new PronosticoFueraDeTiempoException();
+                }
                 String goles1Str = txtGolesSel1.getText().toString().trim();
                 String goles2Str = txtGolesSel2.getText().toString().trim();
 
@@ -185,15 +186,14 @@ public class PronosticosActivity extends AppCompatActivity {
                 int goles1 = Integer.parseInt(goles1Str);
                 int goles2 = Integer.parseInt(goles2Str);
 
+                if ( goles1<0 || goles2<0){
+                    throw new DatosIncompletosException("Los goles deben ser números enteros mayores o iguales a cero.");
+
+                }
+
                 String idPronostico = usuarioLogueado.getIdUsuario() + "_" + p.getId();
 
-                Pronostico nuevoPronostico = new Pronostico(
-                        idPronostico,
-                        usuarioLogueado.getIdUsuario(),
-                        p.getId(),
-                        goles1,
-                        goles2
-                );
+                Pronostico nuevoPronostico = new Pronostico(idPronostico, usuarioLogueado.getIdUsuario(), p.getId(), goles1, goles2);
 
 
                 String faseSeleccionada = p.getFase();
@@ -202,6 +202,9 @@ public class PronosticosActivity extends AppCompatActivity {
                 if (exito) {
                     Toast.makeText(PronosticosActivity.this, "Pronóstico guardado exitosamente", Toast.LENGTH_SHORT).show();
                 }
+
+            } catch (PronosticoFueraDeTiempoException e) {
+                Toast.makeText(PronosticosActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
             } catch (DatosIncompletosException e) {
                 // Captura de la excepción propia
@@ -250,7 +253,7 @@ public class PronosticosActivity extends AppCompatActivity {
                     txtGoles2.setEnabled(false);
                     btnGuardar.setVisibility(View.GONE);
                     lblMensaje.setVisibility(View.VISIBLE);
-                    lblMensaje.setText("Partido Finalizado!!\n"+"Resultado Oficial: "+p.getGolesSeleccion1()+" - "+p.getGolesSeleccion2());
+                    lblMensaje.setText("Partido Finalizado!!\n" + "Resultado Oficial: " + p.getGolesSeleccion1() + " - " + p.getGolesSeleccion2());
                     lblMensaje.setBackgroundColor(Color.parseColor("#D4EDDA"));
                     lblMensaje.setTextColor(Color.parseColor("#155724"));
                     break;
@@ -270,24 +273,14 @@ public class PronosticosActivity extends AppCompatActivity {
         // Cerramos la actividad actual
         finish();
     }
+
     private int obtenerIdBandera(String nombrePais, View vista) {
         if (nombrePais == null || nombrePais.isEmpty()) return 0;
 
-        String nombreLimpio = nombrePais.toLowerCase()
-                .replace(" ", "_")
-                .replace("á", "a")
-                .replace("é", "e")
-                .replace("í", "i")
-                .replace("ó", "o")
-                .replace("ú", "u")
-                .replace("ñ", "n");
+        String nombreLimpio = nombrePais.toLowerCase().replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n");
 
         String nombreRecurso = "bandera_" + nombreLimpio;
 
-        return vista.getContext().getResources().getIdentifier(
-                nombreRecurso,
-                "drawable",
-                vista.getContext().getPackageName()
-        );
+        return vista.getContext().getResources().getIdentifier(nombreRecurso, "drawable", vista.getContext().getPackageName());
     }
 }

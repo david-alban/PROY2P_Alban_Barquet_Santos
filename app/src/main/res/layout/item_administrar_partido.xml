@@ -161,6 +161,15 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/lblMensajeAdministrarPartido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Los pronósticos para este partido están cerrados."
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCerrarPartido"
             android:layout_width="match_parent"
@@ -168,10 +177,23 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_boton_moderno"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="Cerrar partido"
+            android:text="Cerrar pronósticos"
             android:textColor="@android:color/white"
             android:textSize="13sp"
             android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRegistrarResultado"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_boton_moderno"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Registrar Resultado"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnGuardarResultado"
@@ -183,7 +205,8 @@
             android:text="Guardar resultado"
             android:textColor="@android:color/white"
             android:textSize="13sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

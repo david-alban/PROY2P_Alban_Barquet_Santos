@@ -239,7 +239,7 @@ public class ManejadorArchivos implements Serializable {
     public ArrayList<Pronostico> leerTodosLosPronosticos(Context context, String idUsuario) {
         ArrayList<Pronostico> todosLosPronosticos = new ArrayList<>();
 
-        String[] fases = {"fase_de_grupos", "dieciseisavos_de_final", "octavos", "cuartos_de_final", "semifinales", "tercer_lugar", "final"};
+        String[] fases = {"fase_de_grupos", "dieciseisavos_de_final", "octavos_de_final", "cuartos_de_final", "semifinales", "tercer_lugar", "final"};
 
         for (String fase : fases) {
             String nombreArchivo = "pronostico_" + idUsuario + "_" + fase + ".dat";
@@ -343,6 +343,28 @@ public class ManejadorArchivos implements Serializable {
         }
     }
 
+    public static void guardarPuntajesParticipantes(Context context, ArrayList<Usuario> usuarios) {
+
+        try {
+            FileOutputStream fos = context.openFileOutput("participantes.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(fos);
+            writer.println("idUsuario;puntajeAcumulado");
+
+            for (Usuario usuario : usuarios) {
+                if (usuario instanceof Participante) {
+
+                    Participante participante = (Participante) usuario;
+                    writer.println(participante.getIdUsuario() + ";" + participante.getPuntajeAcumulado());
+                }
+
+            }
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void guardarResultadoOficial(Context context, int idPartido, int goles1, int goles2) {
         try {
             FileOutputStream fos = context.openFileOutput("resultados.txt", Context.MODE_APPEND);
@@ -357,5 +379,6 @@ public class ManejadorArchivos implements Serializable {
             e.printStackTrace();
         }
     }
+
 
 }

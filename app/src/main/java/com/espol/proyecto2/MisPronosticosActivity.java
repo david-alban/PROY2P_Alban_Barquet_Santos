@@ -36,6 +36,7 @@ public class MisPronosticosActivity extends AppCompatActivity {
     private Spinner spFaseMisPronosticos;
     private ArrayList<Partido> partidos;
     LinearLayout contenedorMisPronosticos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class MisPronosticosActivity extends AppCompatActivity {
             }
         }
         obtenerPartidos(misPronosticos);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.fases_spinner,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.fases_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFaseMisPronosticos.setAdapter(adapter);
         mostrarPronosticos("FASE_DE_GRUPOS");
@@ -78,10 +79,7 @@ public class MisPronosticosActivity extends AppCompatActivity {
                 textoSeleccionado.setTextColor(Color.WHITE);
 
                 // Convertir texto a formato
-                String claveFase = faseSeleccionada.toUpperCase()
-                        .replace(" ", "_")
-                        .replace("Í", "I")
-                        .replace("É", "E");
+                String claveFase = faseSeleccionada.toUpperCase().replace(" ", "_").replace("Í", "I").replace("É", "E");
 
                 // Ajuste para la fase de 16avos
                 if (claveFase.equals("DIECISEISAVOS")) {
@@ -102,23 +100,23 @@ public class MisPronosticosActivity extends AppCompatActivity {
         });
     }
 
-    private void obtenerPartidos(ArrayList<Pronostico> pronosticos){
+    private void obtenerPartidos(ArrayList<Pronostico> pronosticos) {
         partidos = new ArrayList<>();
-        for(Pronostico p: pronosticos){
+        for (Pronostico p : pronosticos) {
             Partido partido = pro.buscarPartidoPorId(p.getIdPartido());
             partidos.add(partido);
         }
     }
 
-    public void mostrarPronosticos(String fase){
+    public void mostrarPronosticos(String fase) {
         if (partidos == null) return;
 
         contenedorMisPronosticos.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
         // Creando los views de los partidos
-        for(Partido p: partidos){
-            if(p != null && p.getFase() != null && p.getFase().equals(fase)){
+        for (Partido p : partidos) {
+            if (p != null && p.getFase() != null && p.getFase().equals(fase)) {
                 View vistaPartidos = inflater.inflate(R.layout.item_partido_pronostico, contenedorMisPronosticos, false);
 
                 llenarDatosPartido(vistaPartidos, p);
@@ -158,13 +156,13 @@ public class MisPronosticosActivity extends AppCompatActivity {
         EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesSel1);
         EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesSel2);
 
-            for (Pronostico pron : misPronosticos) {
-                if (pron.getIdPartido().equals(p.getId())) {
-                    txtGolesSel1.setText(String.valueOf(pron.getGolesSel1()));
-                    txtGolesSel2.setText(String.valueOf(pron.getGolesSel2()));
-                    return;
-                }
+        for (Pronostico pron : misPronosticos) {
+            if (pron.getIdPartido().equals(p.getId())) {
+                txtGolesSel1.setText(String.valueOf(pron.getGolesSel1()));
+                txtGolesSel2.setText(String.valueOf(pron.getGolesSel2()));
+                return;
             }
+        }
     }
 
     private void configurarEstadoPartido(View vista, Partido p) {
@@ -204,7 +202,14 @@ public class MisPronosticosActivity extends AppCompatActivity {
                     txtGoles2.setEnabled(false);
                     btnGuardar.setVisibility(View.GONE);
                     lblMensaje.setVisibility(View.VISIBLE);
-                    lblMensaje.setText("Partido Finalizado!!\n"+"Resultado Oficial: "+p.getGolesSeleccion1()+" - "+p.getGolesSeleccion2());
+                    int puntosObtenidos = 0;
+                    for (Pronostico pronostico : misPronosticos) {
+                        if (pronostico.getIdPartido().equals(p.getId())) {
+                            puntosObtenidos = pronostico.getPuntosObtenidos();
+                            break;
+                        }
+                    }
+                    lblMensaje.setText("Partido finalizado\n" + "Resultado oficial: " + p.getGolesSeleccion1() + " - " + p.getGolesSeleccion2() + "\nPuntos obtenidos: " + puntosObtenidos);
                     lblMensaje.setBackgroundColor(Color.parseColor("#D4EDDA"));
                     lblMensaje.setTextColor(Color.parseColor("#155724"));
                     break;
@@ -215,22 +220,11 @@ public class MisPronosticosActivity extends AppCompatActivity {
     private int obtenerIdBandera(String nombrePais, View vista) {
         if (nombrePais == null || nombrePais.isEmpty()) return 0;
 
-        String nombreLimpio = nombrePais.toLowerCase()
-                .replace(" ", "_")
-                .replace("á", "a")
-                .replace("é", "e")
-                .replace("í", "i")
-                .replace("ó", "o")
-                .replace("ú", "u")
-                .replace("ñ", "n");
+        String nombreLimpio = nombrePais.toLowerCase().replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n");
 
         String nombreRecurso = "bandera_" + nombreLimpio;
 
-        return vista.getContext().getResources().getIdentifier(
-                nombreRecurso,
-                "drawable",
-                vista.getContext().getPackageName()
-        );
+        return vista.getContext().getResources().getIdentifier(nombreRecurso, "drawable", vista.getContext().getPackageName());
     }
 
     public void volver(View view) {

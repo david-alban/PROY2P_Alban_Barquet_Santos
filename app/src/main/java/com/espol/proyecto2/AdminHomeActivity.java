@@ -65,7 +65,16 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     public void actualizarPuntajes(View view) {
-        Toast.makeText(this, "Prueba Actualizar Puntajes", Toast.LENGTH_SHORT).show();
+        Intent in = getIntent();
+        Intent intent = new Intent(AdminHomeActivity.this, ActualizarPuntajesActivity.class);
+
+        if (in != null && in.hasExtra("MI_REPOSITORIO")) {
+            ProyectoRepo pro = (ProyectoRepo) in.getSerializableExtra("MI_REPOSITORIO");
+
+            intent.putExtra("MI_REPOSITORIO", pro);
+        }
+
+        startActivity(intent);
 
     }
 

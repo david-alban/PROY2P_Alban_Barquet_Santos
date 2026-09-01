@@ -133,24 +133,45 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
     public void configurarEstadoPartido(View vista, Partido p) {
         EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesRealSel1);
         EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesRealSel2);
+        TextView lblMensaje = vista.findViewById(R.id.lblMensajeAdministrarPartido);
+
 
         Button btnCerrar = vista.findViewById(R.id.btnCerrarPartido);
         Button btnGuardar = vista.findViewById(R.id.btnGuardarResultado);
+        Button btnRegistrar = vista.findViewById(R.id.btnRegistrarResultado);
+
 
 
         switch (p.getEstado()) {
             case ABIERTO:
                 txtGolesSel1.setEnabled(false);
                 txtGolesSel2.setEnabled(false);
+                lblMensaje.setVisibility(View.GONE);
+
                 btnCerrar.setVisibility(View.VISIBLE);
+                btnRegistrar.setVisibility(View.GONE);
                 btnGuardar.setVisibility(View.GONE);
                 break;
 
             case CERRADO:
-                txtGolesSel1.setEnabled(true);
-                txtGolesSel2.setEnabled(true);
+                txtGolesSel1.setEnabled(false);
+                txtGolesSel2.setEnabled(false);
+                lblMensaje.setVisibility(View.VISIBLE);
+
                 btnCerrar.setVisibility(View.GONE);
-                btnGuardar.setVisibility(View.VISIBLE);
+                btnRegistrar.setVisibility(View.VISIBLE);
+                btnGuardar.setVisibility(View.GONE);
+
+
+                btnRegistrar.setOnClickListener(v -> {
+
+                    txtGolesSel1.setEnabled(true);
+                    txtGolesSel2.setEnabled(true);
+
+                    btnRegistrar.setVisibility(View.GONE);
+                    btnGuardar.setVisibility(View.VISIBLE);
+
+                });
                 break;
 
             case FINALIZADO:
@@ -158,8 +179,12 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
                 txtGolesSel2.setText(String.valueOf(p.getGolesSeleccion2()));
                 txtGolesSel1.setEnabled(false);
                 txtGolesSel2.setEnabled(false);
+                lblMensaje.setVisibility(View.GONE);
+
                 btnCerrar.setVisibility(View.GONE);
+                btnRegistrar.setVisibility(View.GONE);
                 btnGuardar.setVisibility(View.GONE);
+
                 break;
         }
 
