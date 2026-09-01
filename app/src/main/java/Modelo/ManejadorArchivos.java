@@ -302,11 +302,16 @@ public class ManejadorArchivos implements Serializable {
             while ((linea = reader.readLine()) != null) {
                 String[] datos = linea.split(",");
                 int idActual = Integer.parseInt(datos[0].trim());
-
                 if (idActual == Integer.parseInt(partidoModificado.getId())) {
                     String nuevaLinea = partidoModificado.getId() + "," +
                             partidoModificado.getFase() + "," +
+                            partidoModificado.getFecha() + "," +
+                            partidoModificado.getHora() + "," +
+                            partidoModificado.getEstadio() + "," +
+                            partidoModificado.getSeleccion1() + "," +
+                            partidoModificado.getSeleccion2() + "," +
                             partidoModificado.getEstado().toString();
+
                     lineasNuevas.add(nuevaLinea);
                 } else {
                     lineasNuevas.add(linea);
@@ -321,26 +326,24 @@ public class ManejadorArchivos implements Serializable {
             }
             writer.close();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void guardarResultadoOficial(Context context, int idPartido, int goles1, int goles2) {
         try {
-
             FileOutputStream fos = context.openFileOutput("resultados.txt", Context.MODE_APPEND);
             PrintWriter writer = new PrintWriter(fos);
-            int idResultado = (int) System.currentTimeMillis();
+            long idResultado = System.currentTimeMillis();
             String linea = idResultado + "," + idPartido + "," + goles1 + "," + goles2;
 
             writer.println(linea);
             writer.close();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 }
