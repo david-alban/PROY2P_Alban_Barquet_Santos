@@ -3,6 +3,10 @@ package Modelo;
 import java.io.Serializable;
 import Excepciones.DatosIncompletosException;
 
+/**
+ * Representa un partido deportivo dentro del sistema de pronósticos.
+ * Implementa {@link Serializable} para permitir su almacenamiento en archivos o transmisión entre componentes de Android.
+ */
 
 public class Partido implements Serializable {
     private String id;
@@ -15,6 +19,20 @@ public class Partido implements Serializable {
     private EstadoPartido estado;
     private int golesSeleccion1;
     private int golesSeleccion2;
+
+    /**
+     * Crea una nueva instancia de un Partido con sus datos básicos.
+     * Los goles de ambas selecciones se inicializan automáticamente en 0.
+     *
+     * @param id         Identificador único del partido.
+     * @param fase       Fase del torneo correspondiente al encuentro.
+     * @param fecha      Fecha en la que se jugará el partido.
+     * @param hora       Hora programada del encuentro.
+     * @param estadio    Estadio donde se llevará a cabo.
+     * @param estado     Estado inicial del partido.
+     * @param seleccion1 Nombre del primer equipo.
+     * @param seleccion2 Nombre del segundo equipo.
+     */
 
     public Partido(String id, String fase, String fecha, String hora, String estadio, EstadoPartido estado, String seleccion1, String seleccion2) {
         this.id = id;
@@ -30,9 +48,22 @@ public class Partido implements Serializable {
         this.golesSeleccion2 = 0;
     }
 
+    /**
+     * Cambia el estado del partido a {@link EstadoPartido#CERRADO}.
+     * Se utiliza para bloquear el ingreso de nuevos pronósticos antes de que comience el encuentro.
+     */
+
     public void cerrarPronosticos() {
         this.estado = EstadoPartido.CERRADO;
     }
+
+    /**
+     * Registra el marcador final del partido y cambia su estado a {@link EstadoPartido#FINALIZADO}.
+     *
+     * @param goles1 Goles oficiales anotados por la primera selección.
+     * @param goles2 Goles oficiales anotados por la segunda selección.
+     * @throws DatosIncompletosException Si alguno de los valores de goles ingresados es menor a cero.
+     */
 
     public void registrarResultadoOficial (int goles1, int goles2) throws DatosIncompletosException {
         if (goles1 < 0 || goles2 < 0) {
@@ -42,6 +73,11 @@ public class Partido implements Serializable {
         this.golesSeleccion2 = goles2;
         this.estado = EstadoPartido.FINALIZADO;
     }
+
+    /**
+     * Setter y Getters
+     * @return
+     */
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -69,6 +105,12 @@ public class Partido implements Serializable {
 
     public int getGolesSeleccion1() { return golesSeleccion1; }
     public int getGolesSeleccion2() { return golesSeleccion2; }
+
+    /**
+     * Devuelve una representación en formato de texto con todos los atributos del partido.
+     *
+     * @return Cadena de texto detallando el estado actual del objeto.
+     */
 
     @Override
     public String toString() {

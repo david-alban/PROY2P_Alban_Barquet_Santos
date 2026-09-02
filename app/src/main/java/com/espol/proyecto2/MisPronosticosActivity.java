@@ -27,6 +27,11 @@ import Modelo.Pronostico;
 import Modelo.ProyectoRepo;
 import Modelo.Usuario;
 
+/**
+ * Actividad que permite a un usuario de tipo Participante visualizar el historial
+ * y el estado actual de los pronósticos que ha registrado en el sistema.
+ */
+
 public class MisPronosticosActivity extends AppCompatActivity {
     private Usuario usuarioLogueado;
     private TextView nombreUsuario;
@@ -36,6 +41,14 @@ public class MisPronosticosActivity extends AppCompatActivity {
     private Spinner spFaseMisPronosticos;
     private ArrayList<Partido> partidos;
     LinearLayout contenedorMisPronosticos;
+
+    /**
+     * Método del ciclo de vida que inicializa la actividad.
+     * Recupera el repositorio desde el Intent, carga la información del usuario,
+     * inicializa el selector de fases y configura su respectivo listener.
+     *
+     * @param savedInstanceState Estado previamente guardado de la actividad.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +91,12 @@ public class MisPronosticosActivity extends AppCompatActivity {
                 TextView textoSeleccionado = (TextView) view;
                 textoSeleccionado.setTextColor(Color.WHITE);
 
-                // Convertir texto a formato
                 String claveFase = faseSeleccionada.toUpperCase().replace(" ", "_").replace("Í", "I").replace("É", "E");
 
-                // Ajuste para la fase de 16avos
                 if (claveFase.equals("DIECISEISAVOS")) {
                     claveFase = "DIECISEISAVOS_DE_FINAL";
                 }
-                // Ajuste para la fase 8vos
+
                 if (claveFase.equals("OCTAVOS")) {
                     claveFase = "OCTAVOS_DE_FINAL";
                 }
@@ -95,10 +106,16 @@ public class MisPronosticosActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // No hacer nada
             }
         });
     }
+
+    /**
+     * Extrae y carga en una lista los objetos {@link Partido} correspondientes
+     * a los pronósticos realizados por el usuario.
+     *
+     * @param pronosticos Lista de pronósticos del usuario actual.
+     */
 
     private void obtenerPartidos(ArrayList<Pronostico> pronosticos) {
         partidos = new ArrayList<>();
@@ -108,13 +125,19 @@ public class MisPronosticosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Limpia la interfaz e inyecta dinámicamente las tarjetas de los partidos pronosticados
+     * que coincidan con la fase solicitada.
+     *
+     * @param fase Clave de la fase del torneo a mostrar (ej. "FASE_DE_GRUPOS").
+     */
+
     public void mostrarPronosticos(String fase) {
         if (partidos == null) return;
 
         contenedorMisPronosticos.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        // Creando los views de los partidos
         for (Partido p : partidos) {
             if (p != null && p.getFase() != null && p.getFase().equals(fase)) {
                 View vistaPartidos = inflater.inflate(R.layout.item_partido_pronostico, contenedorMisPronosticos, false);
@@ -127,6 +150,14 @@ public class MisPronosticosActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Vincula la información de un partido a los componentes visuales de su tarjeta
+     * e intenta cargar dinámicamente las banderas de las selecciones involucradas.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} con la información.
+     */
 
     private void llenarDatosPartido(View vista, Partido p) {
         TextView lblFechaHoraPartido = vista.findViewById(R.id.lblFechaHoraPartido);
@@ -152,6 +183,14 @@ public class MisPronosticosActivity extends AppCompatActivity {
         lblSeleccion2.setText(p.getSeleccion2());
     }
 
+    /**
+     * Busca el pronóstico guardado para el partido dado y rellena los campos de texto
+     * con los goles que el usuario predijo previamente.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} a verificar.
+     */
+
     private void cargarPronosticoExistente(View vista, Partido p) {
         EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesSel1);
         EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesSel2);
@@ -164,6 +203,15 @@ public class MisPronosticosActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Modifica la apariencia y el comportamiento de la tarjeta (colores, inputs habilitados, mensajes)
+     * basándose en el estado en el que se encuentra el partido (ABIERTO, CERRADO, FINALIZADO).
+     * Si el partido está finalizado, calcula y muestra los puntos obtenidos.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} evaluado.
+     */
 
     private void configurarEstadoPartido(View vista, Partido p) {
         TextView lblEstado = vista.findViewById(R.id.lblEstadoPartido);
@@ -218,6 +266,15 @@ public class MisPronosticosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Resuelve dinámicamente el identificador del recurso drawable (imagen de la bandera)
+     * a partir del nombre del país. Normaliza el nombre eliminando acentos y espacios.
+     *
+     * @param nombrePais Nombre oficial de la selección.
+     * @param vista      Contexto de la vista para acceder a los recursos de la aplicación.
+     * @return El ID del recurso drawable correspondiente, o 0 si no se encuentra.
+     */
+
     private int obtenerIdBandera(String nombrePais, View vista) {
         if (nombrePais == null || nombrePais.isEmpty()) return 0;
 
@@ -228,6 +285,13 @@ public class MisPronosticosActivity extends AppCompatActivity {
         return vista.getContext().getResources().getIdentifier(nombreRecurso, "drawable", vista.getContext().getPackageName());
     }
 
+    /**
+     * Finaliza la actividad y devuelve al usuario a la pantalla principal del participante,
+     * transmitiendo de vuelta el repositorio actualizado en el Intent.
+     *
+     * @param view Botón que dispara el evento.
+     */
+
     public void volver(View view) {
         Intent intent = new Intent(MisPronosticosActivity.this, ParticipantHomeActivity.class);
 
@@ -237,7 +301,6 @@ public class MisPronosticosActivity extends AppCompatActivity {
 
         startActivity(intent);
 
-        // Cerramos la actividad actual
         finish();
     }
 }

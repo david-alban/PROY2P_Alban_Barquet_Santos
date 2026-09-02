@@ -30,6 +30,11 @@ import Modelo.Pronostico;
 import Modelo.ProyectoRepo;
 import Modelo.Usuario;
 
+/**
+ * Actividad que permite a los usuarios con rol de Participante visualizar los partidos
+ * disponibles y registrar o actualizar sus pronósticos para cada uno de ellos.
+ */
+
 public class PronosticosActivity extends AppCompatActivity {
     private TextView nombreUsuario;
     private Usuario usuarioLogueado;
@@ -38,6 +43,13 @@ public class PronosticosActivity extends AppCompatActivity {
     private ArrayList<Partido> partidos;
     LinearLayout contenedorPartidos;
     private ProyectoRepo pro;
+
+    /**
+     * Inicializa la actividad configurando el diseño, recuperando el repositorio serializado
+     * y estableciendo el comportamiento del menú desplegable para filtrar por fases.
+     *
+     * @param savedInstanceState Estado previamente guardado de la actividad.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +83,6 @@ public class PronosticosActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFase.setAdapter(adapter);
 
-        // Cargar por defecto la primera fase al abrir la pantalla
         mostrarPronosticos("FASE_DE_GRUPOS");
 
         spFase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,14 +93,12 @@ public class PronosticosActivity extends AppCompatActivity {
                 TextView textoSeleccionado = (TextView) view;
                 textoSeleccionado.setTextColor(Color.WHITE);
 
-                // Convertir texto a formato
                 String claveFase = faseSeleccionada.toUpperCase().replace(" ", "_").replace("Í", "I").replace("É", "E");
 
-                // Ajuste para la fase de 16avos
                 if (claveFase.equals("DIECISEISAVOS")) {
                     claveFase = "DIECISEISAVOS_DE_FINAL";
                 }
-                // Ajuste para la fase 8vos
+
                 if (claveFase.equals("OCTAVOS")) {
                     claveFase = "OCTAVOS_DE_FINAL";
                 }
@@ -99,11 +108,17 @@ public class PronosticosActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // No hacer nada
             }
         });
 
     }
+
+    /**
+     * Limpia el contenedor de partidos y genera dinámicamente las tarjetas para aquellos
+     * partidos que pertenezcan a la fase especificada.
+     *
+     * @param fase Clave que representa la fase a filtrar (ej. "FASE_DE_GRUPOS").
+     */
 
     public void mostrarPronosticos(String fase) {
         if (partidos == null) return;
@@ -111,7 +126,6 @@ public class PronosticosActivity extends AppCompatActivity {
         contenedorPartidos.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        // Creando los views de los partidos
         for (Partido p : partidos) {
             if (p != null && p.getFase() != null && p.getFase().equals(fase)) {
                 View vistaPartidos = inflater.inflate(R.layout.item_partido_pronostico, contenedorPartidos, false);
@@ -125,6 +139,14 @@ public class PronosticosActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Asigna la información del partido (fecha, hora, estadio, nombres de selecciones)
+     * a los elementos visuales correspondientes en su tarjeta, y carga las banderas dinámicamente.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} que contiene la información.
+     */
 
     private void llenarDatosPartido(View vista, Partido p) {
         TextView lblFechaHoraPartido = vista.findViewById(R.id.lblFechaHoraPartido);
@@ -148,6 +170,14 @@ public class PronosticosActivity extends AppCompatActivity {
         lblSeleccion2.setText(p.getSeleccion2());
     }
 
+    /**
+     * Verifica si el usuario ya ha realizado un pronóstico previo para este partido.
+     * Si es así, rellena los campos de texto con los valores anteriores y cambia el texto del botón.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} a evaluar.
+     */
+
     private void cargarPronosticoExistente(View vista, Partido p) {
         EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesSel1);
         EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesSel2);
@@ -165,6 +195,15 @@ public class PronosticosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Configura el comportamiento del botón encargado de guardar o actualizar el pronóstico.
+     * Incluye validaciones para evitar el ingreso de datos incompletos o intentos de pronosticar
+     * partidos que ya no se encuentran abiertos.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} asociado a la tarjeta.
+     */
+
     private void configurarBotonGuardar(View vista, Partido p) {
         EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesSel1);
         EditText txtGolesSel2 = vista.findViewById(R.id.txtGolesSel2);
@@ -178,7 +217,6 @@ public class PronosticosActivity extends AppCompatActivity {
                 String goles1Str = txtGolesSel1.getText().toString().trim();
                 String goles2Str = txtGolesSel2.getText().toString().trim();
 
-                // Lanzar la excepción si algún campo está vacío
                 if (goles1Str.isEmpty() || goles2Str.isEmpty()) {
                     throw new DatosIncompletosException("Debe ingresar ambos marcadores para guardar el pronóstico.");
                 }
@@ -214,6 +252,14 @@ public class PronosticosActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Adapta la interfaz gráfica de la tarjeta del partido (deshabilitando campos, ocultando botones,
+     * y mostrando mensajes de advertencia) dependiendo de si el partido está ABIERTO, CERRADO o FINALIZADO.
+     *
+     * @param vista Vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} evaluado.
+     */
 
     private void configurarEstadoPartido(View vista, Partido p) {
         TextView lblEstado = vista.findViewById(R.id.lblEstadoPartido);
@@ -261,6 +307,13 @@ public class PronosticosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Finaliza la actividad actual y redirige al usuario de vuelta al menú principal de participante.
+     * Transmite el repositorio actualizado a través del Intent.
+     *
+     * @param view Botón que invoca el método.
+     */
+
     public void volver(View view) {
         Intent intent = new Intent(PronosticosActivity.this, ParticipantHomeActivity.class);
 
@@ -270,9 +323,16 @@ public class PronosticosActivity extends AppCompatActivity {
 
         startActivity(intent);
 
-        // Cerramos la actividad actual
         finish();
     }
+
+    /**
+     * Recupera dinámicamente el identificador del recurso (imagen) correspondiente a la bandera de un país.
+     *
+     * @param nombrePais Nombre de la selección deportiva.
+     * @param vista      Contexto visual utilizado para acceder a los recursos del sistema.
+     * @return Identificador entero del recurso drawable, o 0 si no se encuentra coincidencia.
+     */
 
     private int obtenerIdBandera(String nombrePais, View vista) {
         if (nombrePais == null || nombrePais.isEmpty()) return 0;

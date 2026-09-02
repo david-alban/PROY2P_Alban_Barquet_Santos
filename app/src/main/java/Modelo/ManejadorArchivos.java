@@ -26,7 +26,22 @@ import java.util.ArrayList;
 
 import Excepciones.DatosIncompletosException;
 
+/**
+ * Clase encargada de gestionar la persistencia de datos en el almacenamiento interno de la aplicación.
+ * Proporciona métodos para leer y escribir archivos de texto, así como para serializar y deserializar objetos.
+ */
+
 public class ManejadorArchivos implements Serializable {
+
+    /**
+     * Lee las líneas de un archivo de texto desde el almacenamiento interno.
+     * Si el archivo no existe, intenta copiarlo desde la carpeta de 'assets' antes de leerlo.
+     * Omite la primera línea del archivo, asumiendo que es un encabezado.
+     *
+     * @param context       Contexto de la aplicación utilizado para acceder a los archivos.
+     * @param nombreArchivo Nombre del archivo de texto a leer.
+     * @return Una lista de cadenas con las líneas del archivo.
+     */
 
     public ArrayList<String> leerLineas(Context context, String nombreArchivo) {
         ArrayList<String> lineas = new ArrayList<>();
@@ -60,6 +75,14 @@ public class ManejadorArchivos implements Serializable {
 
         return lineas;
     }
+
+    /**
+     * Carga y procesa la información de todos los usuarios registrados en el sistema.
+     * Asocia los puntajes para los participantes y los cargos para los administradores.
+     *
+     * @param context Contexto de la aplicación.
+     * @return Una lista de objetos {@link Usuario} instanciados según su tipo.
+     */
 
     public ArrayList<Usuario> leerUsuarios(Context context) {
         ArrayList<Usuario> usuarios = new ArrayList<>();
@@ -169,6 +192,13 @@ public class ManejadorArchivos implements Serializable {
         return usuarios;
     }
 
+    /**
+     * Lee el archivo de partidos y construye una lista de objetos {@link Partido}.
+     *
+     * @param context Contexto de la aplicación.
+     * @return Una lista de partidos programados.
+     */
+
     public ArrayList<Partido> leerPartidos(Context context) {
         ArrayList<Partido> partidos = new ArrayList<>();
         ArrayList<String> lineas = leerLineas(context, "partidos.txt");
@@ -190,17 +220,40 @@ public class ManejadorArchivos implements Serializable {
         return partidos;
     }
 
+    /**
+     * Lee las líneas correspondientes a los participantes registrados.
+     *
+     * @param context Contexto de la aplicación.
+     * @return Lista de cadenas con los datos de los participantes.
+     */
+
     public ArrayList<String> leerParticipantes(Context context) {
         ArrayList<String> resultado;
         resultado = leerLineas(context, "participantes.txt");
         return resultado;
     }
 
+    /**
+     * Lee las líneas correspondientes a los administradores registrados.
+     *
+     * @param context Contexto de la aplicación.
+     * @return Lista de cadenas con los datos de los administradores.
+     */
+
     public ArrayList<String> leerAdmins(Context context) {
         ArrayList<String> resultado;
         resultado = leerLineas(context, "administradores.txt");
         return resultado;
     }
+
+    /**
+     * Lee los resultados oficiales guardados y actualiza la lista de partidos con los goles registrados.
+     * Muestra un mensaje de error si los datos de un resultado están incompletos.
+     *
+     * @param context  Contexto de la aplicación.
+     * @param partidos Lista de partidos actualmente cargados en memoria.
+     * @return Lista de cadenas extraídas del archivo de resultados.
+     */
 
     public ArrayList<String> leerResultados(Context context, ArrayList<Partido> partidos) {
 
@@ -236,6 +289,15 @@ public class ManejadorArchivos implements Serializable {
         return resultado;
     }
 
+    /**
+     * Deserializa y consolida todos los pronósticos realizados por un usuario en específico
+     * a través de todas las fases del torneo.
+     *
+     * @param context   Contexto de la aplicación.
+     * @param idUsuario Identificador único del participante.
+     * @return Lista con todos los pronósticos creados por el usuario.
+     */
+
     public ArrayList<Pronostico> leerTodosLosPronosticos(Context context, String idUsuario) {
         ArrayList<Pronostico> todosLosPronosticos = new ArrayList<>();
 
@@ -259,6 +321,16 @@ public class ManejadorArchivos implements Serializable {
 
         return todosLosPronosticos;
     }
+
+    /**
+     * Escribe una serie de líneas en un archivo de texto en el almacenamiento interno.
+     *
+     * @param context       Contexto de la aplicación.
+     * @param nombreArchivo Nombre del archivo de destino.
+     * @param lineas        Lista de cadenas de texto a escribir.
+     * @param append        true para añadir información al final del archivo, false para sobreescribirlo.
+     * @return true si la escritura fue exitosa; false si ocurrió un error.
+     */
 
     public boolean escribirLineas(Context context, String nombreArchivo, ArrayList<String> lineas, boolean append) {
 
@@ -284,6 +356,15 @@ public class ManejadorArchivos implements Serializable {
         }
     }
 
+    /**
+     * Guarda (serializa) un objeto en un archivo binario dentro del almacenamiento interno.
+     *
+     * @param context       Contexto de la aplicación.
+     * @param objeto        Objeto serializable a guardar.
+     * @param nombreArchivo Nombre del archivo de destino.
+     * @return true si el objeto fue serializado correctamente; false en caso contrario.
+     */
+
     public boolean serializar(Context context, Object objeto, String nombreArchivo) {
         try (ObjectOutputStream oos = new ObjectOutputStream(context.openFileOutput(nombreArchivo, Context.MODE_PRIVATE))) {
             oos.writeObject(objeto);
@@ -294,6 +375,16 @@ public class ManejadorArchivos implements Serializable {
             return false;
         }
     }
+
+    /**
+     * Lee y reconstruye (deserializa) un objeto almacenado previamente en un archivo binario.
+     *
+     * @param context       Contexto de la aplicación.
+     * @param nombreArchivo Nombre del archivo que contiene los datos serializados.
+     * @return El objeto recuperado desde el archivo.
+     * @throws FileNotFoundException Si el archivo especificado no existe.
+     * @throws IOException           Si ocurre un error durante el proceso de lectura.
+     */
 
     public Object deserializar(Context context, String nombreArchivo) throws FileNotFoundException, IOException {
         Object salida = null;
@@ -306,6 +397,13 @@ public class ManejadorArchivos implements Serializable {
 
         return salida;
     }
+
+    /**
+     * Actualiza el estado de un partido específico directamente en el archivo "partidos.txt".
+     *
+     * @param context           Contexto de la aplicación.
+     * @param partidoModificado Instancia del partido con su información actualizada (ej. estado de ABIERTO a CERRADO).
+     */
 
     public static void actualizarEstadoPartido(Context context, Partido partidoModificado) {
         ArrayList<String> lineasNuevas = new ArrayList<>();
@@ -343,6 +441,14 @@ public class ManejadorArchivos implements Serializable {
         }
     }
 
+    /**
+     * Escribe y actualiza el archivo "participantes.txt" con los puntajes acumulados actuales
+     * de los usuarios tipo Participante.
+     *
+     * @param context  Contexto de la aplicación.
+     * @param usuarios Lista de usuarios del sistema.
+     */
+
     public static void guardarPuntajesParticipantes(Context context, ArrayList<Usuario> usuarios) {
 
         try {
@@ -365,6 +471,15 @@ public class ManejadorArchivos implements Serializable {
 
     }
 
+    /**
+     * Agrega un nuevo registro de resultado oficial para un partido al final del archivo "resultados.txt".
+     *
+     * @param context   Contexto de la aplicación.
+     * @param idPartido Identificador numérico del partido concluido.
+     * @param goles1    Goles anotados por la primera selección.
+     * @param goles2    Goles anotados por la segunda selección.
+     */
+
     public static void guardarResultadoOficial(Context context, int idPartido, int goles1, int goles2) {
         try {
             FileOutputStream fos = context.openFileOutput("resultados.txt", Context.MODE_APPEND);
@@ -379,6 +494,4 @@ public class ManejadorArchivos implements Serializable {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -15,10 +15,23 @@ import androidx.core.view.WindowInsetsCompat;
 import Modelo.Administrador;
 import Modelo.ProyectoRepo;
 
+/**
+ * Actividad que representa el menú principal (Home) para los usuarios con rol de Administrador.
+ * Proporciona la interfaz y la navegación hacia las opciones de gestión del sistema, como
+ * administrar partidos y actualizar los puntajes de los participantes.
+ */
+
 public class AdminHomeActivity extends AppCompatActivity {
     private TextView userName;
     private TextView userRol;
 
+    /**
+     * Método del ciclo de vida de la actividad llamado al momento de su creación.
+     * Configura el diseño de la pantalla, aplica los márgenes del sistema, extrae el
+     * repositorio de datos desde el Intent y carga la información inicial en el menú.
+     *
+     * @param savedInstanceState Estado previamente guardado de la actividad, si existe.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +59,14 @@ public class AdminHomeActivity extends AppCompatActivity {
                 userRol.setText(usuarioActual.getTipoUsuario().toString());
             }
         }
-
-
     }
+
+    /**
+     * Manejador de evento (onClick) para el botón de "Administrar Partidos".
+     * Inicia la actividad {@link AdministrarPartidosActivity} transfiriendo el repositorio de datos serializado.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
 
     public void administrarPartidos(View view) {
         Intent in = getIntent();
@@ -64,6 +82,13 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Manejador de evento (onClick) para el botón de "Actualizar Puntajes".
+     * Inicia la actividad {@link ActualizarPuntajesActivity} transfiriendo el repositorio de datos serializado.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
+
     public void actualizarPuntajes(View view) {
         Intent in = getIntent();
         Intent intent = new Intent(AdminHomeActivity.this, ActualizarPuntajesActivity.class);
@@ -77,6 +102,13 @@ public class AdminHomeActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    /**
+     * Manejador de evento (onClick) para el botón de "Salir".
+     * Cierra todas las actividades asociadas a la aplicación y la finaliza por completo.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
 
     public void salir(View view) {
         finishAffinity();

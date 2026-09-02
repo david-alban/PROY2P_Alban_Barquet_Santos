@@ -24,11 +24,24 @@ import Modelo.ProyectoRepo;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 
+/**
+ * Actividad que renderiza y muestra la tabla de posiciones (ranking) de todos los participantes.
+ * Ordena a los usuarios según su puntaje acumulado de mayor a menor.
+ */
+
 public class TablaPosicionesActivity extends AppCompatActivity {
     private TextView nombreUsuario;
     private TextView rolUsuario;
     private LinearLayout contenedorPuntajes;
     private ArrayList<Usuario> usuarios;
+
+    /**
+     * Método del ciclo de vida que inicializa la actividad.
+     * Configura la interfaz, extrae los datos del repositorio mediante el Intent y
+     * llama al método de renderizado de la tabla.
+     *
+     * @param savedInstanceState Estado previamente guardado de la actividad.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +71,27 @@ public class TablaPosicionesActivity extends AppCompatActivity {
         mostrarPuntajes();
     }
 
+    /**
+     * Finaliza la actividad actual y regresa a la pantalla del menú principal.
+     *
+     * @param view Botón que invoca el método.
+     */
+
     public void volver(View view){
         finish();
     }
+
+    /**
+     * Genera dinámicamente la tabla de posiciones en la interfaz de usuario.
+     * Realiza un filtrado para extraer únicamente a los usuarios de tipo PARTICIPANTE,
+     * los ordena haciendo uso de la interfaz {@link Comparable} implementada en su clase,
+     * y finalmente infla una vista (fila) por cada participante para mostrar su posición y puntaje.
+     */
 
     public void mostrarPuntajes() {
         contenedorPuntajes.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        // Header
         View headerView = inflater.inflate(R.layout.item_posicion_ranking, contenedorPuntajes, false);
         headerView.setBackgroundResource(R.drawable.bg_header_rounded);
 
@@ -95,7 +120,6 @@ public class TablaPosicionesActivity extends AppCompatActivity {
         }
 
         Collections.sort(participantes);
-
 
         int i = 0;
         for (Participante participante : participantes) {

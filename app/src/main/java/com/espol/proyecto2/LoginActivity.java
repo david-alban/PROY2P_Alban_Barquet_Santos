@@ -20,10 +20,25 @@ import Modelo.ProyectoRepo;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 
+/**
+ * Actividad inicial de la aplicación que gestiona el inicio de sesión.
+ * Autentica las credenciales del usuario y lo redirige a la pantalla principal
+ * correspondiente según su rol (Administrador o Participante).
+ */
+
 public class LoginActivity extends AppCompatActivity {
     private EditText txtUsuario;
     private EditText txtPasword;
     private Button btnIngresar;
+
+    /**
+     * Método del ciclo de vida de la actividad llamado al crearse la vista.
+     * Configura el diseño, inicializa el repositorio de datos y establece el manejador
+     * de eventos para el botón de ingreso, el cual valida las credenciales y maneja la navegación.
+     *
+     * @param savedInstanceState Contiene el estado previamente guardado de la actividad, si existe.
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

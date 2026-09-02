@@ -16,10 +16,28 @@ import Modelo.ProyectoRepo;
 import Modelo.TipoUsuario;
 import Modelo.Usuario;
 
+/**
+ * Actividad que representa el menú principal (Home) para los usuarios con rol de Participante.
+ * Sirve como el centro de navegación hacia las funcionalidades principales como visualizar
+ * la tabla de posiciones, registrar nuevos pronósticos o revisar el historial personal.
+ */
+
 public class ParticipantHomeActivity extends AppCompatActivity {
+
+    /**
+     * Componente de texto para mostrar el nombre completo del participante en el encabezado.
+     */
 
     private TextView nombreUsuario;
     private TextView rolUsuario;
+
+    /**
+     * Método del ciclo de vida de la actividad llamado al momento de su creación.
+     * Configura el diseño de la pantalla, aplica los márgenes del sistema, extrae el
+     * repositorio de datos desde el Intent y carga la información inicial en la interfaz.
+     *
+     * @param savedInstanceState Estado previamente guardado de la actividad, si existe.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +66,25 @@ public class ParticipantHomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Manejador de evento (onClick) para el botón de "Salir".
+     * Cierra todas las actividades asociadas a la aplicación y finaliza el proceso de la interfaz.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
+
     public void salir(View view) {
 
         finishAffinity();
     }
+
+    /**
+     * Manejador de evento (onClick) para el botón de "Tabla de Posiciones".
+     * Inicia la actividad {@link TablaPosicionesActivity} transfiriendo el repositorio de datos serializado.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
 
     public void tablaPosiciones(View view){
         Intent in = getIntent();
@@ -63,6 +96,14 @@ public class ParticipantHomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Manejador de evento (onClick) para el botón de "Pronósticos".
+     * Inicia la actividad {@link PronosticosActivity} para registrar nuevos pronósticos,
+     * transfiriendo el repositorio de datos serializado.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
+
     public void pronosticos(View view){
         Intent in = getIntent();
         Intent intent = new Intent(ParticipantHomeActivity.this, PronosticosActivity.class);
@@ -72,6 +113,14 @@ public class ParticipantHomeActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
+
+    /**
+     * Manejador de evento (onClick) para el botón de "Mis Pronósticos".
+     * Inicia la actividad {@link MisPronosticosActivity} para consultar el historial personal,
+     * transfiriendo el repositorio de datos serializado.
+     *
+     * @param view La vista (botón) que fue presionada.
+     */
 
     public void misPronosticos(View view){
         Intent in = getIntent();

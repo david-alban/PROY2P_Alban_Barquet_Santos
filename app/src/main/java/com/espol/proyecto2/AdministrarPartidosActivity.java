@@ -28,6 +28,11 @@ import Modelo.ManejadorArchivos;
 import Modelo.Partido;
 import Modelo.ProyectoRepo;
 
+/**
+ * Actividad que proporciona la interfaz para que un Administrador gestione los partidos del torneo.
+ * Permite filtrar los partidos por fase, cerrar la recepción de pronósticos y registrar los resultados oficiales.
+ */
+
 public class AdministrarPartidosActivity extends AppCompatActivity {
 
     private TextView nombreUsuario;
@@ -37,6 +42,12 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
     private LinearLayout contenedorPartidos;
     private ProyectoRepo pro;
 
+    /**
+     * Inicializa la actividad configurando la interfaz, el repositorio de datos y el selector de fases.
+     * Carga por defecto la "Fase de Grupos" al iniciar.
+     *
+     * @param savedInstanceState Estado previamente guardado de la actividad.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +92,12 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
 
                 TextView textoSeleccionado = (TextView) view;
                 textoSeleccionado.setTextColor(Color.WHITE);
-
-                // Convertir texto a formato
-
-
                 String claveFase = faseSeleccionada.toUpperCase().replace(" ", "_").replace("Í", "I").replace("É", "E");
 
-                // Ajuste para la fase de 16avos
                 if (claveFase.equals("DIECISEISAVOS")) {
                     claveFase = "DIECISEISAVOS_DE_FINAL";
                 }
-                // Ajuste para la fase 8vos
+
                 if (claveFase.equals("OCTAVOS")) {
                     claveFase = "OCTAVOS_DE_FINAL";
                 }
@@ -101,12 +107,18 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // No hacer nada
             }
         });
 
 
     }
+
+    /**
+     * Limpia el contenedor principal e inyecta dinámicamente las vistas de los partidos
+     * que coincidan con la fase seleccionada.
+     *
+     * @param fase Clave en formato String de la fase a mostrar (ej. "FASE_DE_GRUPOS").
+     */
 
     public void mostrarPartidos(String fase) {
         if (partidos == null) {
@@ -126,9 +138,16 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
                 contenedorPartidos.addView(vistaPartidos);
             }
         }
-
-
     }
+
+    /**
+     * Configura la visibilidad y el comportamiento de los botones y campos de texto
+     * de un partido específico, dependiendo de su estado actual (ABIERTO, CERRADO, FINALIZADO).
+     * También define los listeners para cerrar pronósticos o guardar resultados oficiales.
+     *
+     * @param vista La vista inflada que representa la tarjeta individual del partido.
+     * @param p     Objeto {@link Partido} correspondiente a dicha vista.
+     */
 
     public void configurarEstadoPartido(View vista, Partido p) {
         EditText txtGolesSel1 = vista.findViewById(R.id.txtGolesRealSel1);
@@ -139,8 +158,6 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
         Button btnCerrar = vista.findViewById(R.id.btnCerrarPartido);
         Button btnGuardar = vista.findViewById(R.id.btnGuardarResultado);
         Button btnRegistrar = vista.findViewById(R.id.btnRegistrarResultado);
-
-
 
         switch (p.getEstado()) {
             case ABIERTO:
@@ -229,30 +246,34 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Vincula los datos estáticos del objeto {@link Partido} a los componentes visuales de su respectiva tarjeta.
+     *
+     * @param vista La vista inflada de la tarjeta del partido.
+     * @param p     Objeto {@link Partido} con la información a mostrar.
+     */
+
     private void llenarDatosPartido(View vista, Partido p) {
         TextView lblFechaHoraPartido = vista.findViewById(R.id.lblFechaHoraAdministrarPartido);
-
         TextView lblEstadoPartido = vista.findViewById(R.id.lblEstadoAdministrarPartido);
-
         TextView lblEstadioPartido = vista.findViewById(R.id.lblEstadioAdministrarPartido);
-
         TextView lblSeleccion1 = vista.findViewById(R.id.lblSeleccion1Administrar);
-
         TextView lblSeleccion2 = vista.findViewById(R.id.lblSeleccion2Administrar);
 
         lblFechaHoraPartido.setText(p.getFecha() + " - " + p.getHora());
-
         lblEstadoPartido.setText(p.getEstado().toString());
-
         lblEstadioPartido.setText(p.getEstadio());
-
         lblSeleccion1.setText(p.getSeleccion1());
-
         lblSeleccion2.setText(p.getSeleccion2());
     }
+
+    /**
+     * Finaliza la actividad actual y regresa a la pantalla anterior.
+     *
+     * @param view La vista (botón) presionada.
+     */
 
     public void volver(View view) {
         finish();
     }
-
 }
