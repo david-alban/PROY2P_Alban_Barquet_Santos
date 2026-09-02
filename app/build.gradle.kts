@@ -46,30 +46,49 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
 }
 
-tasks.register<Javadoc>("generarJavadoc") {
-    group = "documentation"
-    description = "Genera el Javadoc del proyecto de forma limpia"
+val androidExtension =
+    extensions.getByType<com.android.build.api.dsl.ApplicationExtension>()
 
-    val androidExtension = extensions.getByType(com.android.build.gradle.AppExtension::class.java)
-    source(androidExtension.sourceSets["main"].java.srcDirs)
+val androidComponents =
+    extensions.getByType<com.android.build.api.variant.ApplicationAndroidComponentsExtension>()
 
-    classpath += files(androidExtension.bootClasspath)
-    exclude("**/R.java", "**/BuildConfig.java")
+androidComponents.onVariants(
+    androidComponents.selector().withBuildType("debug")
+) { variant ->
 
-    destinationDir = file("$rootDir/JAVADOC")
+    tasks.register<Javadoc>("generarJavadoc") {
+        group = "documentation"
+        description = "Genera el Javadoc del proyecto de forma limpia"
 
-    options {
-        encoding = "UTF-8"
-        memberLevel = JavadocMemberLevel.PROTECTED
-        (this as StandardJavadocDocletOptions).apply {
+        source(
+            files(
+                androidExtension.sourceSets
+                    .getByName("main")
+                    .java
+                    .directories
+            )
+        )
 
-            header = "Proyecto 2P - Javadoc"
-            addStringOption("encoding", "UTF-8")
-            addStringOption("docencoding", "UTF-8")
-            addStringOption("charset", "UTF-8")
+        classpath =
+            variant.compileClasspath +
+                    files(androidComponents.sdkComponents.bootClasspath)
+
+        exclude("**/R.java", "**/BuildConfig.java")
+
+        destinationDir = file("$rootDir/JAVADOC")
+
+        options {
+            encoding = "UTF-8"
+            memberLevel = JavadocMemberLevel.PROTECTED
+
+            (this as StandardJavadocDocletOptions).apply {
+                header = "Proyecto 2P - Javadoc"
+                addStringOption("encoding", "UTF-8")
+                addStringOption("docencoding", "UTF-8")
+                addStringOption("charset", "UTF-8")
+            }
         }
-    }
 
-    // Evitar que la tarea falle por advertencias menores de Javadoc
-    isFailOnError = false
+        isFailOnError = false
+    }
 }
