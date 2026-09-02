@@ -71,6 +71,7 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
             pro = (ProyectoRepo) intent.getSerializableExtra("MI_REPOSITORIO");
 
             if (pro != null && pro.getUsuarioLogueado() != null) {
+                pro.cargarDatosMenu(this);
                 Administrador usuarioActual = (Administrador) pro.getUsuarioLogueado();
 
                 partidos = pro.getPartidos();
@@ -259,12 +260,33 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
         TextView lblEstadioPartido = vista.findViewById(R.id.lblEstadioAdministrarPartido);
         TextView lblSeleccion1 = vista.findViewById(R.id.lblSeleccion1Administrar);
         TextView lblSeleccion2 = vista.findViewById(R.id.lblSeleccion2Administrar);
+        android.widget.ImageView imgSeleccion1 = vista.findViewById(R.id.imgSeleccion1Administrar);
+        android.widget.ImageView imgSeleccion2 = vista.findViewById(R.id.imgSeleccion2Administrar);
 
         lblFechaHoraPartido.setText(p.getFecha() + " - " + p.getHora());
         lblEstadoPartido.setText(p.getEstado().toString());
         lblEstadioPartido.setText(p.getEstadio());
         lblSeleccion1.setText(p.getSeleccion1());
         lblSeleccion2.setText(p.getSeleccion2());
+
+        int idBandera1 = obtenerIdBandera(p.getSeleccion1(), vista);
+        if (idBandera1 != 0) {
+            imgSeleccion1.setImageResource(idBandera1);
+        }
+        int idBandera2 = obtenerIdBandera(p.getSeleccion2(), vista);
+        if (idBandera2 != 0) {
+            imgSeleccion2.setImageResource(idBandera2);
+        }
+    }
+
+    private int obtenerIdBandera(String nombrePais, View vista) {
+        if (nombrePais == null || nombrePais.isEmpty()) return 0;
+
+        String nombreLimpio = nombrePais.toLowerCase().replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n");
+
+        String nombreRecurso = "bandera_" + nombreLimpio;
+
+        return vista.getContext().getResources().getIdentifier(nombreRecurso, "drawable", vista.getContext().getPackageName());
     }
 
     /**
