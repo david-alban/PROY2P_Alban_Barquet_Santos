@@ -71,6 +71,7 @@ public class AdministrarPartidosActivity extends AppCompatActivity {
             pro = (ProyectoRepo) intent.getSerializableExtra("MI_REPOSITORIO");
 
             if (pro != null && pro.getUsuarioLogueado() != null) {
+                pro.cargarDatosMenu(this);
                 Administrador usuarioActual = (Administrador) pro.getUsuarioLogueado();
 
                 partidos = pro.getPartidos();
