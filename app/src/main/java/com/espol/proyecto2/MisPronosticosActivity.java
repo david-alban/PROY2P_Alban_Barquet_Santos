@@ -182,7 +182,8 @@ public class MisPronosticosActivity extends AppCompatActivity {
                     lblEstado.setTextColor(Color.parseColor("#2E7D32"));
                     txtGoles1.setEnabled(true);
                     txtGoles2.setEnabled(true);
-                    lblMensaje.setVisibility(View.GONE);
+                    lblMensaje.setVisibility(View.VISIBLE);
+                    lblMensaje.setText("El partido todavia no ha finalizado.");
                     break;
 
                 case CERRADO:
