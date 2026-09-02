@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.external.javadoc.JavadocMemberLevel
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -41,4 +44,32 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
+}
+
+tasks.register<Javadoc>("generarJavadoc") {
+    group = "documentation"
+    description = "Genera el Javadoc del proyecto de forma limpia"
+
+    val androidExtension = extensions.getByType(com.android.build.gradle.AppExtension::class.java)
+    source(androidExtension.sourceSets["main"].java.srcDirs)
+
+    classpath += files(androidExtension.bootClasspath)
+    exclude("**/R.java", "**/BuildConfig.java")
+
+    destinationDir = file("$rootDir/JAVADOC")
+
+    options {
+        encoding = "UTF-8"
+        memberLevel = JavadocMemberLevel.PROTECTED
+        (this as StandardJavadocDocletOptions).apply {
+
+            header = "Proyecto 2P - Javadoc"
+            addStringOption("encoding", "UTF-8")
+            addStringOption("docencoding", "UTF-8")
+            addStringOption("charset", "UTF-8")
+        }
+    }
+
+    // Evitar que la tarea falle por advertencias menores de Javadoc
+    isFailOnError = false
 }
